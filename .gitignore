@@ -115,3 +115,5 @@ ENV/
 
  .idea/
 /user/migrations/
+/inventory/migrations/
+.idea

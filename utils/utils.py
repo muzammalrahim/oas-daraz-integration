@@ -1,8 +1,33 @@
+from hashlib import sha256
+from hmac import HMAC
+from urllib.parse import urlencode
+
 from oas import settings
 from constance import config
 from itertools import chain
 from user.models import User
 import datetime
+from dateutil.tz import tzlocal
+
+
+def get_daraz_parameter(user_id, key, action, **kwargs):
+    parameters = {
+        'UserID': user_id,
+        'Version': '1.0',
+        'Action': action,
+        'Format': 'json',
+        **kwargs,
+        'Timestamp': datetime.datetime.now(tzlocal()).replace(microsecond=0).isoformat()
+    }
+    api_key = bytes(key, 'utf-8')
+
+    sorted_list = sorted(parameters.items())
+
+    concatenated = urlencode(sorted_list)
+
+    parameters['Signature'] = HMAC(api_key, bytes(concatenated, 'utf8'), sha256).hexdigest()
+
+    return urlencode(sorted(parameters.items()))
 
 
 def get_settings(allow_settings):

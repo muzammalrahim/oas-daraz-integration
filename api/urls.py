@@ -36,5 +36,6 @@ urlpatterns += [
     path('oas-models/', user_views.oas_models),
     path('import/', inventory_views.import_data),
     path('conditions', inventory_views.get_conditions),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    path('daraz/', include('darazapi.urls')),
 ]
