@@ -5,7 +5,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { Input, DatePickerField, Select as MSelect } from "../../../../../../_metronic/_partials/controls";
+import { Input, DatePickerField, Select as MSelect, Checkbox } from "../../../../../../_metronic/_partials/controls";
 import Creatable from "react-select/creatable";
 import { withAsyncPaginate, AsyncPaginate } from "react-select-async-paginate";
 
@@ -19,13 +19,13 @@ import {
   ProductConditionTitles,
 } from "../ProductsUIHelpers";
 import { list, loadOptions, DROPDOWN_WAIT, post } from "../../../../../pages/helper/api";
-import {CloudUpload as CloudUploadIcon} from "@material-ui/icons";
+import { CloudUpload as CloudUploadIcon } from "@material-ui/icons";
 import {
-    Button as ButtonCore,
+  Button as ButtonCore,
 } from "@material-ui/core";
 import { STATIC_URL } from "../../../../../pages/helper/api";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import {CKEditor} from "@ckeditor/ckeditor5-react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { cond } from "lodash";
 
 const CreatableAsyncPaginate = withAsyncPaginate(Creatable);
@@ -81,8 +81,8 @@ export function ProductEditForm({
     loadModels();
     getCondition();
   }, []);
-  const getCondition = ()=>{
-    list('conditions').then(response=>{
+  const getCondition = () => {
+    list('conditions').then(response => {
       setCondition(response.data.conditions)
     })
   }
@@ -90,48 +90,47 @@ export function ProductEditForm({
   useEffect(() => {
     if (product.id) {
       categories.map(category => {
-        if(category.id === product.product_category) 
+        if (category.id === product.product_category)
           setCategory(category);
       })
       manufacturers.map(manf => {
-        if(manf.id === product.product_manufacturer) 
+        if (manf.id === product.product_manufacturer)
           setManfacturer(manf);
       })
       suppliers.map(supplier => {
-        if(supplier.id === product.supplier) 
+        if (supplier.id === product.supplier)
           setSupplier(supplier);
       })
     }
 
-    if(product.product_image) {
+    if (product.product_image) {
       let file = {};
       let filename_pieces = product.product_image.split('/');
       file.name_c = filename_pieces[filename_pieces.length - 1];
-      setPreviewFile(STATIC_URL+product.product_image_name);
+      setPreviewFile(STATIC_URL + product.product_image_name);
       setSelectFile(file);
     }
-
   }, [product])
 
   function loadModels() {
     let models = {
-      'Manufacturer':{},
-      'Supplier':{},
-      'ProductCategory':{},
+      'Manufacturer': {},
+      'Supplier': {},
+      'ProductCategory': {},
     }
-    post('oas-models', {models:models}).then(function(response){
-      for(let opt in response.data){
+    post('oas-models', { models: models }).then(function (response) {
+      for (let opt in response.data) {
         response.data[opt].map((row, i) => {
           response.data[opt][i].label = row.name ? row.name : row.company_name;
           response.data[opt][i].value = row.id;
 
-          if(opt === 'ProductCategory' && row.value === product.product_category)
+          if (opt === 'ProductCategory' && row.value === product.product_category)
             setCategory(row);
 
-          if(opt === 'Manufacturer' && row.value === product.product_manufacturer)
+          if (opt === 'Manufacturer' && row.value === product.product_manufacturer)
             setManfacturer(row);
 
-          if(opt === 'Supplier' && row.value === product.supplier)
+          if (opt === 'Supplier' && row.value === product.supplier)
             setSupplier(row);
 
         })
@@ -145,55 +144,55 @@ export function ProductEditForm({
   }
 
   function createCategory(option, setFieldValue) {
-    post('product-category', {name:option}).then(function(response){
-      setCategory({label:response.data.name, value:response.data.id});
+    post('product-category', { name: option }).then(function (response) {
+      setCategory({ label: response.data.name, value: response.data.id });
       setFieldValue('product_category', response.data.id);
     })
   }
 
   function createManfacturer(option, setFieldValue) {
-    post('manufacturer', {name:option}).then(function(response){
-      setManfacturer({label:response.data.name, value:response.data.id});
+    post('manufacturer', { name: option }).then(function (response) {
+      setManfacturer({ label: response.data.name, value: response.data.id });
       setFieldValue('product_manufacturer', response.data.id);
     })
   }
 
   function createSupplier(option, setFieldValue) {
-    post('supplier', {company_name:option}).then(function(response){
-      setSupplier({label:response.data.company_name, value:response.data.id});
+    post('supplier', { company_name: option }).then(function (response) {
+      setSupplier({ label: response.data.company_name, value: response.data.id });
       setFieldValue('supplier', response.data.id);
     })
   }
 
 
-  function fileChangedHandler(event)  {
-        let file = event.target.files[0];
-        setPreviewFile(URL.createObjectURL(file));
-        if (file != undefined) {
-            file.size_c = file.size / 1024;
+  function fileChangedHandler(event) {
+    let file = event.target.files[0];
+    setPreviewFile(URL.createObjectURL(file));
+    if (file != undefined) {
+      file.size_c = file.size / 1024;
 
-            if ((file.size_c) / 1024 > 2) {
-                file.size_c = (file.size_c / 1024).toFixed(2) + ' MB';
-                file.error = "Error: File is too big";
-                setSelectFile(file);
-            } else {
-                file.error = null;
-                file.size_c = file.size_c.toFixed(2) + ' KB';
-                let reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onloadend = () => {
-                    setProductImage(reader.result);
-                    setSelectFile(file);
-                };
-            }
-        }
+      if ((file.size_c) / 1024 > 2) {
+        file.size_c = (file.size_c / 1024).toFixed(2) + ' MB';
+        file.error = "Error: File is too big";
+        setSelectFile(file);
+      } else {
+        file.error = null;
+        file.size_c = file.size_c.toFixed(2) + ' KB';
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          setProductImage(reader.result);
+          setSelectFile(file);
+        };
+      }
     }
+  }
 
 
   function handleFileRemove(event) {
-      setProductImage(null);
-      setSelectFile(null);
-      document.getElementById('news-image-upload').value = '';
+    setProductImage(null);
+    setSelectFile(null);
+    document.getElementById('news-image-upload').value = '';
   }
   return (
     <>
@@ -203,7 +202,7 @@ export function ProductEditForm({
         validationSchema={ProductEditSchema}
         onSubmit={(values) => {
           values.product_image = productImage;
-          values.product_title = values.product_title ? values.product_title :  values.part_number
+          values.product_title = values.product_title ? values.product_title : values.part_number
           saveProduct(values);
         }}
       >
@@ -228,12 +227,12 @@ export function ProductEditForm({
                   />
                 </div>
                 <div className="form-group col-lg-4">
-                <Field
-                  name="short_description"
-                  component={Input}
-                  placeholder='Short Descriptiion'
-                  label="Short Description"
-                />
+                  <Field
+                    name="short_description"
+                    component={Input}
+                    placeholder='Short Descriptiion'
+                    label="Short Description"
+                  />
                 </div>
               </div>
               <div className="row">
@@ -276,26 +275,26 @@ export function ProductEditForm({
                   <label>Category</label>
                   <CreatableAsyncPaginate
                     name="product_category"
-                    onChange= {(value) => {
+                    onChange={(value) => {
                       setFieldValue('product_category', value.value);
                       setCategory(value);
                     }}
                     value={category}
                     onCreateOption={(option) => createCategory(option, setFieldValue)}
-                    isClearable = {true}
+                    isClearable={true}
                     loadOptions={(search, prevOptions) => loadOptions(search, prevOptions, categories, modelsLoaded)}
                   />
                 </div>
                 <div className="form-group col-lg-4">
-                   <Field 
-                     name="tag_date"
-                     component={Input}
-                     label="Tag Date"
-                   />
+                  <Field
+                    name="tag_date"
+                    component={Input}
+                    label="Tag Date"
+                  />
                 </div>
               </div>
               <div className="row">
-              <div className="form-group col-lg-4">
+                <div className="form-group col-lg-4">
                   <MSelect name="hazmat" label="Hazmat">
                     {YES_NO_OPTIONS.map((status, index) => (
                       <option key={status} value={status}>
@@ -324,7 +323,7 @@ export function ProductEditForm({
                 </div>
               </div>
               <div className="row">
-              {values.hazmat === 'Yes' && <div className="form-group col-lg-4">
+                {values.hazmat === 'Yes' && <div className="form-group col-lg-4">
                   <Field
                     name="un_code"
                     component={Input}
@@ -332,7 +331,7 @@ export function ProductEditForm({
                     label="UN Code"
                   />
                 </div>}
-              <div className="form-group col-lg-4">
+                <div className="form-group col-lg-4">
                   <Field
                     name="stock_location"
                     component={Input}
@@ -349,15 +348,15 @@ export function ProductEditForm({
                 </div>
                 <div className="form-group col-lg-4">
                   <label>Manufacturer</label>
-                  <CreatableAsyncPaginate 
+                  <CreatableAsyncPaginate
                     debounceTimeout={!modelsLoaded ? DROPDOWN_WAIT : 0}
-                    isClearable = {true}
-                    onChange= {(value) => {
+                    isClearable={true}
+                    onChange={(value) => {
                       setFieldValue('product_manufacturer', value.value);
                       setManfacturer(value);
                     }}
                     value={manfacturer}
-                    name="product_manufacturer" 
+                    name="product_manufacturer"
                     onCreateOption={(option) => createManfacturer(option, setFieldValue)}
                     loadOptions={(search, prevOptions) => loadOptions(search, prevOptions, manufacturers, modelsLoaded)}
                   />
@@ -366,18 +365,18 @@ export function ProductEditForm({
                   <label>Supplier</label>
                   <CreatableAsyncPaginate
                     debounceTimeout={!modelsLoaded ? DROPDOWN_WAIT : 0}
-                    isClearable = {true}  
-                    onChange= {(value) => {
+                    isClearable={true}
+                    onChange={(value) => {
                       setFieldValue('supplier', value.value);
                       setSupplier(value);
                     }}
-                    name="supplier" 
+                    name="supplier"
                     value={supplier}
                     onCreateOption={(option) => createSupplier(option, setFieldValue)}
                     loadOptions={(search, prevOptions) => loadOptions(search, prevOptions, suppliers, modelsLoaded)}
                   />
                 </div>
-                <div className="form-group col-lg-4">
+                {/* <div className="form-group col-lg-4">
                   <MSelect name="hot_sale_item" label="Hot sale item">
                     {YES_NO_OPTIONS.map((status, index) => (
                       <option key={status} value={status}>
@@ -385,7 +384,7 @@ export function ProductEditForm({
                       </option>
                     ))}
                   </MSelect>
-                </div>
+                </div> */}
                 <div className="form-group col-lg-4">
                   <MSelect name="status" label="Status">
                     {ProductStatusTitles.map((status, index) => (
@@ -395,67 +394,80 @@ export function ProductEditForm({
                     ))}
                   </MSelect>
                 </div>
+                <div className="form-group col-lg-4"></div>
+                {/* checkbox for Best seller */}
+                <div className="form-group col-lg-4">
+                  <label>Best Seller</label>
+                  <Checkbox name="best_seller" isSelected={values['best_seller']} onChange={(event) => setFieldValue('best_seller', event.target.checked)} />
+                </div>
+
+                {/* checkbox for Best seller */}
+                <div className="form-group col-lg-4">
+                  <label>Featured product</label>
+                  <Checkbox name="featured_product" isSelected={values['featured_product']} onChange={(event) => setFieldValue('featured_product', event.target.checked)} />
+                </div>
+
               </div>
               <div className="form-group">
                 <label>Description:</label>
                 <CKEditor
-                    name="description"
-                    editor={ ClassicEditor }
-                    data={values?.description ? values?.description : ''}
-                    onChange={ ( event, editor ) => {
-                      const data = editor.getData();
-                      setFieldValue('description', data);
-                    } }
+                  name="description"
+                  editor={ClassicEditor}
+                  data={values?.description ? values?.description : ''}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    setFieldValue('description', data);
+                  }}
                 />
               </div>
               <div className="form-group">
-                  <input
-                      accept="image/*"
-                      style={{display: 'none'}}
-                      type="file"
-                      id="news-image-upload"
-                      name="image"
-                      onChange={fileChangedHandler}
-                  />
-                  <br/>
+                <input
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  type="file"
+                  id="news-image-upload"
+                  name="image"
+                  onChange={fileChangedHandler}
+                />
+                <br />
                 <label htmlFor="news-image-upload">
-                    <ButtonCore variant="outlined" color="inherit" component="span">
-                        Select Image
-                        <CloudUploadIcon style={{marginLeft: '5px'}}/>
-                    </ButtonCore>
+                  <ButtonCore variant="outlined" color="inherit" component="span">
+                    Select Image
+                        <CloudUploadIcon style={{ marginLeft: '5px' }} />
+                  </ButtonCore>
                 </label>
               </div>
-                        <div className="form-group form-group-last row">
-                            <div className="col-12 col-md-4">
-                                <div className="dropzone dropzone-multi" id="kt_dropzone_5">
-                                    <div className="dropzone-items" style={{display: selectedFile ? 'block' : 'none'}}>
-                                        <div className="dropzone-item">
-                                            <div className="dropzone-file">
-                                                {previewFile &&
-                                                <div style={{'maxWidth': '250px'}}><img style={{width: "100%"}}
-                                                                                         src={previewFile}/>
-                                                </div>
-                                                }
-                                                <div className="dropzone-filename" title="some_image_file_name.jpg">
-                                                    <span
-                                                        data-dz-name>{selectedFile ? selectedFile.name : 'No file selected'}</span>
-                                                    <strong>(<span
-                                                        data-dz-size>{selectedFile && selectedFile.size_c ? selectedFile.size_c : ''}</span>)</strong>
-                                                </div>
-                                                <div className="dropzone-error"
-                                                     data-dz-errormessage>{selectedFile && selectedFile.error ? selectedFile.error : ''}</div>
-                                            </div>
-                                            <div className="dropzone-toolbar">
-                                                <span onClick={(e) => handleFileRemove(e)}
-                                                      className="dropzone-delete" data-dz-remove><i
-                                                    className="flaticon2-cross"></i></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span className="form-text text-muted">Max file size is 2MB.</span>
+              <div className="form-group form-group-last row">
+                <div className="col-12 col-md-4">
+                  <div className="dropzone dropzone-multi" id="kt_dropzone_5">
+                    <div className="dropzone-items" style={{ display: selectedFile ? 'block' : 'none' }}>
+                      <div className="dropzone-item">
+                        <div className="dropzone-file">
+                          {previewFile &&
+                            <div style={{ 'maxWidth': '250px' }}><img style={{ width: "100%" }}
+                              src={previewFile} />
                             </div>
+                          }
+                          <div className="dropzone-filename" title="some_image_file_name.jpg">
+                            <span
+                              data-dz-name>{selectedFile ? selectedFile.name : 'No file selected'}</span>
+                            <strong>(<span
+                              data-dz-size>{selectedFile && selectedFile.size_c ? selectedFile.size_c : ''}</span>)</strong>
+                          </div>
+                          <div className="dropzone-error"
+                            data-dz-errormessage>{selectedFile && selectedFile.error ? selectedFile.error : ''}</div>
                         </div>
+                        <div className="dropzone-toolbar">
+                          <span onClick={(e) => handleFileRemove(e)}
+                            className="dropzone-delete" data-dz-remove><i
+                              className="flaticon2-cross"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span className="form-text text-muted">Max file size is 2MB.</span>
+                </div>
+              </div>
               <button
                 type="submit"
                 style={{ display: "none" }}

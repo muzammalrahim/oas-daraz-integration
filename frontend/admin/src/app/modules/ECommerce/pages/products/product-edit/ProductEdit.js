@@ -17,14 +17,14 @@ import { ModalProgressBar } from "../../../../../../_metronic/_partials/controls
 import { RemarksUIProvider } from "../product-remarks/RemarksUIContext";
 import { Remarks } from "../product-remarks/Remarks";
 import { ADMIN_ROUTE } from "../../../../../pages/helper/api";
-import { Snackbar, SnackbarContent, IconButton} from "@material-ui/core"
+import { Snackbar, SnackbarContent, IconButton } from "@material-ui/core"
 import PropTypes from 'prop-types';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import { amber, green } from '@material-ui/core/colors';
 import clsx from 'clsx';
 import {
-    Delete as DeleteIcon, Close as CloseIcon, CheckCircle as CheckCircleIcon, Error as ErrorIcon, Info as InfoIcon,
-    Warning as WarningIcon
+  Delete as DeleteIcon, Close as CloseIcon, CheckCircle as CheckCircleIcon, Error as ErrorIcon, Info as InfoIcon,
+  Warning as WarningIcon
 } from '@material-ui/icons'
 
 
@@ -107,16 +107,18 @@ const initProduct = {
   status: 1,
   hazmat: "No",
   unit_price: 0,
-  unit_of_measure:"",
-  quantity:1,
-  turn_around_time:"",
-  hot_sale_item:"No",
-  certification:"",
-  product_image_name:"",
-  un_code:"",
-  stock_location:"",
-  short_description:"",
-  product_title:""
+  unit_of_measure: "",
+  quantity: 1,
+  turn_around_time: "",
+  // hot_sale_item: "No",
+  certification: "",
+  product_image_name: "",
+  un_code: "",
+  stock_location: "",
+  short_description: "",
+  product_title: "",
+  best_seller: false,
+  featured_product: false,
 };
 
 export function ProductEdit({
@@ -131,7 +133,7 @@ export function ProductEdit({
   // Tabs
   const [tab, setTab] = useState("basic");
   const [title, setTitle] = useState("");
-  
+
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('success');
   const [open, setOpen] = useState(false);
@@ -161,32 +163,32 @@ export function ProductEdit({
   }, [productForEdit, id]);
 
   const saveProduct = (values) => {
-    
+
     if (!id) {
       dispatch(actions.createProduct(values)).then((response) => {
-        if(response){
+        if (response) {
           setOpen(true)
           setMessage("Can't create Product")
           setMessageType('error')
-        }else{
+        } else {
           backToProductsList()
         }
       });
     } else {
 
       dispatch(actions.updateProduct(values)).then((response) => {
-        if(response){
+        if (response) {
           setOpen(true)
           setMessage("Can't update Product")
           setMessageType('error')
-        }else{
+        } else {
           backToProductsList()
         }
       });
     }
   };
 
-  const btnRef = useRef();  
+  const btnRef = useRef();
   const saveProductClick = () => {
     if (btnRef && btnRef.current) {
       btnRef.current.click();
@@ -226,13 +228,13 @@ export function ProductEdit({
       </CardHeader>
       <CardBody>
         <div className="mt-5">
-            <ProductEditForm
-              actionsLoading={actionsLoading}
-              product={productForEdit || initProduct}
-              btnRef={btnRef}
-              saveProduct={saveProduct}
-            />
-            <Snackbar
+          <ProductEditForm
+            actionsLoading={actionsLoading}
+            product={productForEdit || initProduct}
+            btnRef={btnRef}
+            saveProduct={saveProduct}
+          />
+          <Snackbar
             anchorOrigin={{
               vertical: 'top',
               horizontal: 'right',
@@ -246,7 +248,7 @@ export function ProductEdit({
               variant={messageType}
               message={message}
             />
-        </Snackbar>
+          </Snackbar>
         </div>
       </CardBody>
     </Card>

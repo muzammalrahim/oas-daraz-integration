@@ -113,7 +113,5 @@ ENV/
  !**/migrations
  !**/migrations/__init__.py
 
- .idea/
-/user/migrations/
-/inventory/migrations/
+.idea/
 .idea

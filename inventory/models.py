@@ -83,6 +83,8 @@ class Inventory(models.Model):
     status = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    best_seller = models.BooleanField(default=False)
+    featured_product = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.id and self.product_image and self.product_image is not None:

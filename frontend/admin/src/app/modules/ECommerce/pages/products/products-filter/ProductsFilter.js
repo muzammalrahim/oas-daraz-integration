@@ -158,7 +158,8 @@ useEffect(() => {
                   <b>Filter</b> by Hazmat
                 </small>
               </div>
-              <div className="col-lg-2">
+              {/* TODO: select for best seller or featured_product */}
+              {/* <div className="col-lg-2">
                 <select
                   className="form-control"
                   placeholder="Filter by Hot Sale Item"
@@ -178,7 +179,7 @@ useEffect(() => {
                 <small className="form-text text-muted">
                   <b>Filter</b> by Hot Sale Item
                 </small>
-              </div>
+              </div> */}
               <div className="col-lg-2">
                 <input
                   type="text"

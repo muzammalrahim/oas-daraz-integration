@@ -95,12 +95,13 @@ export function ProductsTable() {
       sort: true,
       sortCaret: sortCaret,
     },
-    {
-      dataField: "hot_sale_item",
-      text: "HST",
-      sort: true,
-      sortCaret: sortCaret,
-    },
+    // TODO: use best_seller and featured_seller
+    // {
+    //   dataField: "hot_sale_item",
+    //   text: "HST",
+    //   sort: true,
+    //   sortCaret: sortCaret,
+    // },
     {
       dataField: "unit_of_measure",
       text: "UOM",
