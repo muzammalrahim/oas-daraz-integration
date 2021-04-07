@@ -26,6 +26,8 @@ export function Builder() {
   const [settings, setSettings] = useState([]);
   const [clientId, setClientId] = useState('')
   const [clientSecret, setClientSecret] = useState('')
+  const [darazMode, setDarazMode] = useState(false)
+  const [darazObj, setDarazObj] = useState({userId:"", api_key:""})
   const htmlClassService = useHtmlClassService();
   const initialValues = useMemo(
     () =>
@@ -73,6 +75,24 @@ export function Builder() {
     })
   }
 
+  const handleSubmitDarazIntegration = (event) =>{
+    event.preventDefault();
+    setIsLoading(true);
+    post('daraz/login', {
+      "daraz_active": darazMode,
+      ...darazObj
+    }).then(response=>{
+      console.log(response.data);
+      setIsLoading(false);
+    }).catch(error=>{
+      console.log(error.response)
+      setIsLoading(false);
+    })
+  }
+
+  const handleCancel = (event)=>{
+    setDarazObj({userId:"", api_key:""})
+  }
 
   return (
     <>
@@ -171,6 +191,18 @@ export function Builder() {
                       }}
                     >
                       PayPal
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className={`nav-link ${key === 6 ? "active" : ""}`}
+                      data-toggle="tab"
+                      onClick={() => {
+                        setKey(6);
+                        saveCurrentTab(6);
+                      }}
+                    >
+                      Daraz Integration
                     </a>
                   </li>
                 </ul>
@@ -440,9 +472,81 @@ export function Builder() {
                         </div>
                       </div>
                     </div>
+                    <div className={`tab-pane ${key === 6 ? "active" : ""}`}>
+                      <div className="form-group row">
+                        <label className="col-lg-3 col-form-label text-lg-right">
+                          Activate Daraz Integration
+                        </label>
+                        <div className="col-lg-9 col-xl-4">
+                          <Switch
+                            onBlur={handleBlur}
+                            onChange={()=> setDarazMode(!darazMode)}
+                            name="daraz.mode"
+                            checked={darazMode}
+                          />
+                          <FormHelperText>
+                            {darazMode ? "Activate": "Unactivae"} 
+                          </FormHelperText>
+                        </div>
+                      </div>
+                          <div className="form-group row">
+                          <label className="col-lg-3 col-form-label text-lg-right">
+                            Daraz User Id:
+                          </label>
+                          <div className="col-lg-9 col-xl-4">
+                            <input
+                              className="form-control form-control-solid"
+                              name="userId"
+                              value={darazObj.userId}
+                              onChange={e=>setDarazObj({ ...darazObj, [e.target.name]:e.target.value})}
+                            />
+                          </div>
+                        </div>
+                        <div className="form-group row">
+                        <label className="col-lg-3 col-form-label text-lg-right">
+                          Daraz API key:
+                        </label>
+                        <div className="col-lg-9 col-xl-4">
+                          <input
+                            className="form-control form-control-solid"
+                            name="api_key"
+                            value={darazObj.api_key}
+                            onChange={e=>setDarazObj({ ...darazObj, [e.target.name]:e.target.value})}
+                          />
+                        </div>
+                      </div>
+                        
+                        <div className="form-group row">
+                          <div className="col-lg-3"></div>
+                            <div className="col-lg-9">
+                              <button
+                                type="button"
+                                onClick={handleSubmitDarazIntegration}
+                                className={`btn btn-info font-weight-bold mr-2`}
+                              >
+                                Submit
+                              </button>{" "}
+                              <button
+                                type="button"
+                                onClick={handleCancel}
+                                className={`btn btn-clean btn-hover-info font-weight-bold mr-2`}
+                              >
+                                <i className="la la-recycle" /> Cancel
+                              </button>{" "}
+                              <span
+                                className={`ml-3 ${clsx({
+                                  spinner: isLoading,
+                                })}`}
+                              />
+                            </div>
+                        </div>
+
+                    </div>
+
                   </div>
                 </div>
-
+                
+                {key !==6 && 
                 <div className="card-footer">
                   <div className="row">
                     <div className="col-lg-3"></div>
@@ -468,10 +572,9 @@ export function Builder() {
                       />
                     </div>
                   </div>
-                </div>
+                </div>}
               </div>
             </div>
-
             {/*Config*/}
             {/* <Card className="mt-4">
               <CardHeader

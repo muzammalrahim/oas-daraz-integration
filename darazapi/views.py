@@ -1,7 +1,11 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import generics
 import requests as httpResuest
 from rest_framework.decorators import api_view
 
+from darazapi.models import Daraz
+from darazapi.serializers import DarazSerializer
 from utils.utils import get_daraz_parameter
 
 
@@ -57,3 +61,26 @@ def get_order(request):
     if 'SuccessResponse' in data.keys():
         return Response(data['SuccessResponse']['Body'])
 
+
+class DarazCreateView(generics.CreateAPIView):
+    serializer_class = DarazSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class DarazCredentialView(generics.RetrieveAPIView):
+    serializer_class = DarazSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def get_object(self):
+        return self.request.user.daraz
+
+
+class DarazUpdateView(generics.UpdateAPIView):
+    serializer_class = DarazSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user.daraz
