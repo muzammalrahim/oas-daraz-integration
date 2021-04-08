@@ -38,7 +38,7 @@ class ProductCategory(models.Model):
 
 
 class Inventory(models.Model):
-    part_number = models.CharField(max_length=50)
+    part_number = models.CharField(max_length=50, blank=True, null=True)
     alt_part_number = models.CharField(max_length=50, blank=True, null=True)
     short_description = models.TextField(max_length=500, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -71,11 +71,11 @@ class Inventory(models.Model):
         ('KG', 'KG'),
     )
     unit_of_measure = models.CharField(choices=UOM_CHOICES, max_length=5, blank=True, null=True)
-    HOT_SALE_CHOICES = (
-        ('Yes', 'Yes'),
-        ('No', 'No')
-    )
-    hot_sale_item = models.CharField(choices=HOT_SALE_CHOICES, max_length=5, blank=True, null=True)
+    # HOT_SALE_CHOICES = (
+    #     ('Yes', 'Yes'),
+    #     ('No', 'No')
+    # )
+    # hot_sale_item = models.CharField(choices=HOT_SALE_CHOICES, max_length=5, blank=True, null=True)
     product_image = models.ImageField(max_length=191, blank=True, null=True)
     supplier = models.ForeignKey('user.Supplier', on_delete=models.SET_NULL, blank=True, null=True)
     product_category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, blank=True, null=True)
@@ -85,6 +85,8 @@ class Inventory(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     best_seller = models.BooleanField(default=False)
     featured_product = models.BooleanField(default=False)
+    daraz_product = models.BooleanField(default=False)
+    daraz_id = models.IntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.id and self.product_image and self.product_image is not None:

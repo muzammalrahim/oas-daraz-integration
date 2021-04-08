@@ -14,7 +14,8 @@ import {
   getInitLayoutConfig,
 } from "../../layout";
 import { Card, CardBody, CardHeader, Notice, Input } from "../controls";
-import { post, list } from "../../../app/pages/helper/api";
+import { post, list, put } from "../../../app/pages/helper/api";
+import { EventAvailable } from "@material-ui/icons";
 
 const localStorageActiveTabKey = "builderActiveTab";
 
@@ -24,6 +25,7 @@ export function Builder() {
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState(false)
   const [settings, setSettings] = useState([]);
+  // const [darazcredential, setDarazCredential] = useState({})
   const [clientId, setClientId] = useState('')
   const [clientSecret, setClientSecret] = useState('')
   const [darazMode, setDarazMode] = useState(false)
@@ -50,6 +52,11 @@ export function Builder() {
     }).catch(error=>{
       console.log(error)
     })
+    // list('daraz/credentials').then(response=>{
+    //   setDarazCredential(response.data)
+    // }).catch(error=>{
+    //   console.log(error)
+    // })
   }, [])
 
   useEffect(() => {
@@ -75,23 +82,59 @@ export function Builder() {
     })
   }
 
-  const handleSubmitDarazIntegration = (event) =>{
-    event.preventDefault();
-    setIsLoading(true);
-    post('daraz/login', {
-      "daraz_active": darazMode,
+  // useEffect(()=>{
+  //   setDarazMode(darazcredential['active'])
+  //   setDarazObj({userId: darazcredential['userId'], api_key: darazcredential['api_key']})
+  // }, [darazcredential])
+
+  // const handleSubmitDarazIntegration = (event) =>{
+  //   event.preventDefault();
+  //   setIsLoading(true);
+  //   if(darazcredential['id'] === undefined ){
+  //     // setup new daraz account
+  //     post('daraz/login', {
+  //     "active": darazMode,
+  //     ...darazObj
+  //   }).then(response=>{
+  //     setDarazCredential(response.data)
+  //     setIsLoading(false);
+  //   }).catch(error=>{
+  //     console.log(error.response)
+  //     setIsLoading(false);
+  //   })
+
+  // }else{
+  //   // update daraz account
+  //   put('daraz/update/credentials/', {
+  //     "active": darazMode,
+  //     ...darazObj
+  //   }).then(response=>{
+  //     setDarazCredential(response.data)
+  //     setIsLoading(false);
+  //   }).catch(error=>{
+  //     console.log(error.response)
+  //     setIsLoading(false);
+  //   })
+  // }
+
+  // }
+
+  // const handleCancel = (event)=>{
+  //   console.log("handle cancel call ", )
+  //   setDarazCredential(darazcredential)
+  // }
+
+  const handleSyncDaraz = (event) =>{
+    setIsLoading(true)
+    post('daraz/products', {
       ...darazObj
     }).then(response=>{
-      console.log(response.data);
-      setIsLoading(false);
+      console.log(response);
+      setIsLoading(false)
     }).catch(error=>{
       console.log(error.response)
-      setIsLoading(false);
+      setIsLoading(false)
     })
-  }
-
-  const handleCancel = (event)=>{
-    setDarazObj({userId:"", api_key:""})
   }
 
   return (
@@ -474,10 +517,11 @@ export function Builder() {
                     </div>
                     <div className={`tab-pane ${key === 6 ? "active" : ""}`}>
                       <div className="form-group row">
+
+                        {/* <div className="col-lg-9 col-xl-4">
                         <label className="col-lg-3 col-form-label text-lg-right">
                           Activate Daraz Integration
                         </label>
-                        <div className="col-lg-9 col-xl-4">
                           <Switch
                             onBlur={handleBlur}
                             onChange={()=> setDarazMode(!darazMode)}
@@ -487,9 +531,25 @@ export function Builder() {
                           <FormHelperText>
                             {darazMode ? "Activate": "Unactivae"} 
                           </FormHelperText>
+                        </div> */}
+                          <div className="col-lg-9 col-xl-2"></div>
+                          <div className="col-lg-9 col-xl-4">
+                            <button
+                                type="button"
+                                onClick={handleSyncDaraz}
+                                className={`btn btn-info font-weight-bold mr-2`}
+                              >
+                                Sync Daraz
+                              </button>{" "}
+                              <span
+                                  className={`ml-3 ${clsx({
+                                    spinner: isLoading,
+                                  })}`}
+                                />
                         </div>
-                      </div>
-                          <div className="form-group row">
+                        </div>
+                        
+                        <div className="form-group row">
                           <label className="col-lg-3 col-form-label text-lg-right">
                             Daraz User Id:
                           </label>
@@ -516,7 +576,7 @@ export function Builder() {
                         </div>
                       </div>
                         
-                        <div className="form-group row">
+                        {/* <div className="form-group row">
                           <div className="col-lg-3"></div>
                             <div className="col-lg-9">
                               <button
@@ -539,7 +599,7 @@ export function Builder() {
                                 })}`}
                               />
                             </div>
-                        </div>
+                        </div> */}
 
                     </div>
 
