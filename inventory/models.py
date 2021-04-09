@@ -1,9 +1,14 @@
+from tempfile import NamedTemporaryFile
+
+from django.core.files import File
 from django.db import models
 from utils.utils import unique_slugify
 from PIL import Image
 from io import BytesIO
-import os, sys
+import sys
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from urllib import request
+
 
 class Manufacturer(models.Model):
     name = models.CharField(max_length=191)
@@ -90,7 +95,15 @@ class Inventory(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id and self.product_image and self.product_image is not None:
-            self.product_image = self.compressImage(self.product_image)
+            if self.daraz_product:
+                url = self.product_image.url.replace("/media/https%3A", 'https:/')
+                img_temp = NamedTemporaryFile(delete=True)
+                img_temp.write(request.urlopen(url).read())
+                img_temp.flush()
+                img = File(img_temp)
+            else:
+                img = self.product_image
+            self.product_image = self.compressImage(img)
         super().save(*args, **kwargs)
 
     def compressImage(self,uploadedImage):

@@ -4,21 +4,9 @@ from rest_framework import generics
 import requests as httpResuest
 from rest_framework.decorators import api_view
 
-from darazapi.models import Daraz
 from darazapi.serializers import DarazSerializer
 from inventory.models import Inventory
-from utils.utils import get_daraz_parameter, handle_upload_url_file, get_image_from_url
-
-
-# def get_category(user_id, key, categories_id):
-#     URL = 'https://api.sellercenter.daraz.pk'
-#     action = 'GetCategoryAttributes'
-#     for id in categories_id:
-#         attr = {'PrimaryCategory': id}
-#         parameter = get_daraz_parameter(user_id, key, action, **attr)
-#         r = httpResuest.get()
-#
-#     pass
+from utils.utils import get_daraz_parameter
 
 
 @api_view(['POST'])
@@ -41,24 +29,21 @@ def get_products(request):
             data = (data['SuccessResponse']['Body'])
             if data['TotalProducts'] > 0:
                 products = data['Products']
-                # image_url = products[0]['Skus'][0]['Images'][0]
-                # file = handle_upload_url_file(image_url)
-                all_products = [Inventory(
-                    product_title=product['Attributes']['name'],
-                    short_description=product['Attributes']['short_description_en'],
-                    quantity=product['Skus'][0]['quantity'],
-                    unit_price=product['Skus'][0]['price'],
-                    tag_date=product['Skus'][0]['special_from_date'],
-                    status=1 if product['Skus'][0]['Status'] == 'active' else 0,
-                    description=product['Attributes']['description'],
-                    product_image=get_image_from_url(product['Skus'][0]['Images'][0]),
-                    daraz_id=product['ItemId'],
-                    daraz_product=True
-                ) for product in products if not Inventory.objects.filter(daraz_product=True)
-                    .filter(daraz_id=product['ItemId']).exists()]
+                for product in products:
+                    if not Inventory.objects.filter(daraz_product=True).filter(daraz_id=product['ItemId']).exists():
+                        Inventory.objects.create(
+                            product_title=product['Attributes']['name'],
+                            short_description=product['Attributes']['short_description_en'],
+                            quantity=product['Skus'][0]['quantity'],
+                            unit_price=product['Skus'][0]['price'],
+                            tag_date=product['Skus'][0]['special_from_date'],
+                            status=1 if product['Skus'][0]['Status'] == 'active' else 0,
+                            description=product['Attributes']['description'],
+                            product_image=product['Skus'][0]['Images'][0],
+                            daraz_id=product['ItemId'],
+                            daraz_product=True
+                        )
 
-                if all_products:
-                    Inventory.objects.bulk_create(all_products)
                 return Response({"success": True})
 
 

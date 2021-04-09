@@ -1,13 +1,6 @@
-import requests as httpRequest
-import tempfile
 from hashlib import sha256
 from hmac import HMAC
 from urllib.parse import urlencode
-
-from django.core.files import File
-from django.core.files.base import File
-from urllib import request
-from django.core.files.temp import NamedTemporaryFile
 
 from oas import settings
 from constance import config
@@ -35,38 +28,6 @@ def get_daraz_parameter(user_id, key, action, **kwargs):
     parameters['Signature'] = HMAC(api_key, bytes(concatenated, 'utf8'), sha256).hexdigest()
 
     return urlencode(sorted(parameters.items()))
-
-
-def get_image_from_url(url):
-    resp = httpRequest.get(url, stream=True)
-    if resp.status_code != httpRequest.codes.ok:
-        pass
-    lf = NamedTemporaryFile()
-    lf.write(resp.content)
-    lf.flush()
-    img = File(lf)
-    return img
-
-
-def handle_upload_url_file(url):
-    img_temp = tempfile.NamedTemporaryFile(delete=True)
-    req = request.Request(
-        url, data=None,
-        headers={
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
-        }
-    )
-    try:
-        with request.urlopen(req) as response:
-            img_temp.write(response.read())
-        img_temp.flush()
-    except:
-        return None
-    # filename = basename(urlparse(url).path)
-    # result = obj.image.save(filename, File(img_temp))
-    file = File(img_temp)
-    # img_temp.close()
-    return file
 
 
 def get_settings(allow_settings):
