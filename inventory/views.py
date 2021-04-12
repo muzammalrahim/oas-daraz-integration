@@ -57,7 +57,7 @@ class InventoryViewSet(viewsets.ModelViewSet):
 		instance = self.get_object()
 		serializer = self.get_serializer(instance)
 		data = serializer.data
-		data['product_image_name'] = instance.product_image.name
+		# data['product_image_name'] = instance.image
 		return Response(data)
 
 	@action(detail=False, methods=['post'], url_path='delete-all', url_name="delete-all")

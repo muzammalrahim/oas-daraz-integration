@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from inventory import models as inventory_model
+from inventory.models import ProductImages
 from utils import utils
 import base64, six, uuid
 from django.core.files.base import ContentFile
 from user.serializers import ContactSerializer
+
 class Base64ImageField(serializers.ImageField):
 
     def to_internal_value(self, data):
@@ -48,34 +50,50 @@ class Base64ImageField(serializers.ImageField):
         return super(Base64ImageField, self).from_native(data)
 
 
+class ProductImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductImages
+        fields = ("image", )
+
+
 class InventorySerializer(serializers.ModelSerializer):
-    product_image = Base64ImageField(max_length=None, allow_null=True, use_url=True, required=False)
+    # product_image = Base64ImageField(max_length=None, allow_null=True, use_url=True, required=False)
+    product_images = ProductImageSerializer(source='images', read_only=True, many=True)
+    images = serializers.ListField(required=False, write_only=True, max_length=8,
+                                   child=serializers.ImageField(max_length=191, use_url=True))
 
     def create(self, validated_data):
         part_number = validated_data.get('part_number')
         condition = validated_data.get('condition')
 
+        product_image_data = validated_data.get('images', None)
+        del validated_data['images']
+
         try:
             product = inventory_model.Inventory.objects.filter(part_number=part_number,condition=condition).first()
             product.quantity += validated_data.get('quantity' or 0)
             product.save()
-            return product
+            # return product
         except:
-            return inventory_model.Inventory.objects.create(**validated_data)
+            product = inventory_model.Inventory.objects.create(**validated_data)
 
-    def to_representation(self, instance):
-        representation = super(InventorySerializer, self).to_representation(instance)
-        related_models = ['product_category', 'supplier', 'product_manufacturer']
+        for product_image in product_image_data:
+            ProductImages.objects.create(product=product, image=product_image)
 
-        for model in related_models:
-            try:
-                representation[model] = utils.to_dict(getattr(instance, model))
-            except:
-                representation[model] = None
+        return product
 
-        return representation
-
-
+    # def to_representation(self, instance):
+    #     representation = super(InventorySerializer, self).to_representation(instance)
+    #     related_models = ['product_category', 'supplier', 'product_manufacturer']
+    #
+    #     for model in related_models:
+    #         try:
+    #             representation[model] = utils.to_dict(getattr(instance, model))
+    #         except:
+    #             representation[model] = None
+    #
+    #     return representation
 
     class Meta:
         model = inventory_model.Inventory
@@ -84,8 +102,6 @@ class InventorySerializer(serializers.ModelSerializer):
 
 class EnquirySerializer(serializers.ModelSerializer):
     # def create(self, validated_data):
-
-
 
     def to_representation(self, instance):
         representation = super(EnquirySerializer, self).to_representation(instance)

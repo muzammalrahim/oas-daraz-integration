@@ -5,7 +5,7 @@ import requests as httpResuest
 from rest_framework.decorators import api_view
 
 from darazapi.serializers import DarazSerializer
-from inventory.models import Inventory
+from inventory.models import Inventory, ProductImages
 from utils.utils import get_daraz_parameter
 
 
@@ -27,11 +27,11 @@ def get_products(request):
             return Response(data['ErrorResponse']['Head'])
         if 'SuccessResponse' in data.keys():
             data = (data['SuccessResponse']['Body'])
-            if data['TotalProducts'] > 0:
-                products = data['Products']
+            products = data['Products']
+            if products:
                 for product in products:
                     if not Inventory.objects.filter(daraz_product=True).filter(daraz_id=product['ItemId']).exists():
-                        Inventory.objects.create(
+                        inventory = Inventory.objects.create(
                             product_title=product['Attributes']['name'],
                             short_description=product['Attributes']['short_description_en'],
                             quantity=product['Skus'][0]['quantity'],
@@ -39,12 +39,16 @@ def get_products(request):
                             tag_date=product['Skus'][0]['special_from_date'],
                             status=1 if product['Skus'][0]['Status'] == 'active' else 0,
                             description=product['Attributes']['description'],
-                            product_image=product['Skus'][0]['Images'][0],
                             daraz_id=product['ItemId'],
                             daraz_product=True
                         )
 
+                        for img_url in product['Skus'][0]['Images']:
+                            ProductImages.objects.create(image=img_url, product=inventory)
+
                 return Response({"success": True})
+            else:
+                return Response({"detail": "No product found"})
 
 
 @api_view(['GET'])

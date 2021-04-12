@@ -70,9 +70,9 @@ export function ProductEditForm({
   const [category, setCategory] = useState({});
   const [manfacturer, setManfacturer] = useState({});
   const [supplier, setSupplier] = useState({});
-  const [selectedFile, setSelectFile] = useState(null);
+  const [selectedFile, setSelectFile] = useState([]);
   const [news, setNews] = useState(null);
-  const [previewFile, setPreviewFile] = useState(null);
+  const [previewFile, setPreviewFile] = useState([]);
   const [productImage, setProductImage] = useState(null);
   const [condition, setCondition] = useState([])
 
@@ -103,12 +103,23 @@ export function ProductEditForm({
       })
     }
 
-    if (product.product_image) {
-      let file = {};
-      let filename_pieces = product.product_image.split('/');
-      file.name_c = filename_pieces[filename_pieces.length - 1];
-      setPreviewFile(STATIC_URL + product.product_image_name);
-      setSelectFile(file);
+    if (product.product_images) {
+      let file = [];
+      // let file_path = [];
+      // let img =  product.product_images[0]['image'];
+      for(let i=0; i < product.product_images.length; i++){
+        let obj = {};
+        let img = product.product_images[i]['image'];
+        let filename_pieces = img.split('/');
+        // let filename_pieces = product.product_image.split('/');
+        let img_name = filename_pieces[filename_pieces.length - 1];
+        obj.name=img_name;
+        // file[i] = img_name;
+        obj.path=STATIC_URL + img_name;
+        file[i] = obj;
+      }
+      setPreviewFile(file);
+      // setSelectFile(file);
     }
   }, [product])
 
@@ -189,13 +200,20 @@ export function ProductEditForm({
   }
 
 
-  function handleFileRemove(event) {
-    setProductImage(null);
-    setSelectFile(null);
-    document.getElementById('news-image-upload').value = '';
+  function handleFileRemove(event, img_name) {
+    setPreviewFile(previewFile.filter(file => file.name != img_name))
+    
+    if(previewFile.length === 0) {
+      setProductImage(null);
+      setSelectFile(null);
+      document.getElementById('news-image-upload').value = '';
+    }
   }
+
+  
   return (
     <>
+    {}
       <Formik
         enableReinitialize={true}
         initialValues={product}
@@ -438,19 +456,18 @@ export function ProductEditForm({
                 </label>
               </div>
               <div className="form-group form-group-last row">
-                <div className="col-12 col-md-4">
+                {previewFile && previewFile.map(file => 
+                  <div className="col-12 col-md-4">
                   <div className="dropzone dropzone-multi" id="kt_dropzone_5">
-                    <div className="dropzone-items" style={{ display: selectedFile ? 'block' : 'none' }}>
+                    <div className="dropzone-items" style={{ display: file.name ? 'block' : 'none' }}>
                       <div className="dropzone-item">
                         <div className="dropzone-file">
-                          {previewFile &&
-                            <div style={{ 'maxWidth': '250px' }}><img style={{ width: "100%" }}
-                              src={previewFile} />
+                            <div style={{ 'maxWidth': '250px'}}><img style={{ width: "100%" }}
+                              src={file.path} />
                             </div>
-                          }
                           <div className="dropzone-filename" title="some_image_file_name.jpg">
                             <span
-                              data-dz-name>{selectedFile ? selectedFile.name : 'No file selected'}</span>
+                              data-dz-name>{file.name ? file.name : 'No file selected'}</span>
                             <strong>(<span
                               data-dz-size>{selectedFile && selectedFile.size_c ? selectedFile.size_c : ''}</span>)</strong>
                           </div>
@@ -458,7 +475,7 @@ export function ProductEditForm({
                             data-dz-errormessage>{selectedFile && selectedFile.error ? selectedFile.error : ''}</div>
                         </div>
                         <div className="dropzone-toolbar">
-                          <span onClick={(e) => handleFileRemove(e)}
+                          <span onClick={(e) => handleFileRemove(e, file.name)}
                             className="dropzone-delete" data-dz-remove><i
                               className="flaticon2-cross"></i></span>
                         </div>
@@ -467,6 +484,7 @@ export function ProductEditForm({
                   </div>
                   <span className="form-text text-muted">Max file size is 2MB.</span>
                 </div>
+                )}
               </div>
               <button
                 type="submit"

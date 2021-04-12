@@ -112,7 +112,7 @@ const initProduct = {
   turn_around_time: "",
   // hot_sale_item: "No",
   certification: "",
-  product_image_name: "",
+  // product_image_name: "",
   un_code: "",
   stock_location: "",
   short_description: "",
