@@ -150,6 +150,7 @@ class ProductImages(models.Model):
             else:
                 img = self.image
             self.image = self.compressImage(img)
+            # self.image = img
         super().save(*args, **kwargs)
 
     def compressImage(self,uploadedImage):
