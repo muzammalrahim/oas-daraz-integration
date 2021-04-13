@@ -73,9 +73,9 @@ export function ProductEditForm({
   const [selectedFile, setSelectFile] = useState([]);
   const [news, setNews] = useState(null);
   const [previewFile, setPreviewFile] = useState([]);
-  const [productImage, setProductImage] = useState(null);
+  const [productImage, setProductImage] = useState([]);
   const [condition, setCondition] = useState([])
-
+  const [fileError, setFileError] = useState(null)
 
   useEffect(() => {
     loadModels();
@@ -103,23 +103,21 @@ export function ProductEditForm({
       })
     }
 
-    if (product.product_images) {
-      let file = [];
-      // let file_path = [];
-      // let img =  product.product_images[0]['image'];
-      for(let i=0; i < product.product_images.length; i++){
+    if (product.id && product.images) {
+      for(let i=0; i < product.images.length; i++){
         let obj = {};
-        let img = product.product_images[i]['image'];
+        let img = product.images[i]['image'];
         let filename_pieces = img.split('/');
-        // let filename_pieces = product.product_image.split('/');
         let img_name = filename_pieces[filename_pieces.length - 1];
         obj.name=img_name;
-        // file[i] = img_name;
         obj.path=STATIC_URL + img_name;
-        file[i] = obj;
+        obj._path=product.images[i];
+        // setProductImage(prevState => [...prevState, product.images[i]])
+        setPreviewFile(prevState=>[...prevState, {...obj}])
       }
-      setPreviewFile(file);
-      // setSelectFile(file);
+    }
+    else{
+      setPreviewFile([]);
     }
   }, [product])
 
@@ -177,51 +175,70 @@ export function ProductEditForm({
 
 
   function fileChangedHandler(event) {
-    let file = event.target.files[0];
-    setPreviewFile(URL.createObjectURL(file));
-    if (file != undefined) {
-      file.size_c = file.size / 1024;
+    let files = event.target.files;
+    let total_len = previewFile.length + files.length;
+    // TODO: change the error location
+    if(total_len > 8)  {setFileError("Each product have 8 images."); return;}
 
-      if ((file.size_c) / 1024 > 2) {
-        file.size_c = (file.size_c / 1024).toFixed(2) + ' MB';
-        file.error = "Error: File is too big";
-        setSelectFile(file);
-      } else {
-        file.error = null;
-        file.size_c = file.size_c.toFixed(2) + ' KB';
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-          setProductImage(reader.result);
-          setSelectFile(file);
-        };
+    for(let i=0; i < files.length; i++){
+      let obj = {};
+      obj.name=files[i].name;
+      obj.path = URL.createObjectURL(files[i])
+      let file = files[i];
+      if (file != undefined) {
+          file.size_c = file.size / 1024;
+          if ((file.size_c) / 1024 > 2) {
+            file.size_c = (file.size_c / 1024).toFixed(2) + ' MB';
+            file.error = "Error: File is too big";
+            // setSelectFile(file);
+            obj.error = file.error;
+            obj.size_c = file.size_c;
+            setPreviewFile(prevState=>[...prevState, {...obj}])
+          }
+        else {
+              file.error = null;
+              file.size_c = file.size_c.toFixed(2) + ' KB';
+              obj.size_c = file.size_c;
+              let reader = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onloadend = () => {
+                let result = reader.result
+                setProductImage(prevState=>[...prevState, {"image": result}]);
+                obj._path = {"image": result}
+                setPreviewFile(prevState=>[...prevState, {...obj}])
+                // setSelectFile(file);
+              };
+          }
       }
     }
   }
 
 
   function handleFileRemove(event, img_name) {
-    setPreviewFile(previewFile.filter(file => file.name != img_name))
-    
-    if(previewFile.length === 0) {
-      setProductImage(null);
-      setSelectFile(null);
+    let img_files = previewFile.filter(file => file.name != img_name);
+    let index = previewFile.findIndex(x => x.name === img_name)
+    let obj = previewFile[index];
+    let filter_img = productImage.filter(img => img.image !== obj._path['image'])
+    setPreviewFile(img_files)
+    setProductImage(filter_img);
+    // add the delete login
+    if(previewFile.length === 1){
+      setPreviewFile([])
+      setProductImage([])
       document.getElementById('news-image-upload').value = '';
     }
   }
 
-  
   return (
     <>
-    {}
       <Formik
         enableReinitialize={true}
         initialValues={product}
         validationSchema={ProductEditSchema}
         onSubmit={(values) => {
-          values.product_image = productImage;
-          values.product_title = values.product_title ? values.product_title : values.part_number
-          saveProduct(values);
+          // values.product_images = productImage;
+          // values.product_title = values.product_title ? values.product_title : values.part_number
+          saveProduct(values, productImage);
         }}
       >
         {({ handleSubmit, setFieldValue, values, }) => (
@@ -446,6 +463,7 @@ export function ProductEditForm({
                   id="news-image-upload"
                   name="image"
                   onChange={fileChangedHandler}
+                  multiple
                 />
                 <br />
                 <label htmlFor="news-image-upload">
@@ -457,7 +475,7 @@ export function ProductEditForm({
               </div>
               <div className="form-group form-group-last row">
                 {previewFile && previewFile.map(file => 
-                  <div className="col-12 col-md-4">
+                  <div key={file.name} className="col-12 col-md-4">
                   <div className="dropzone dropzone-multi" id="kt_dropzone_5">
                     <div className="dropzone-items" style={{ display: file.name ? 'block' : 'none' }}>
                       <div className="dropzone-item">
@@ -469,10 +487,10 @@ export function ProductEditForm({
                             <span
                               data-dz-name>{file.name ? file.name : 'No file selected'}</span>
                             <strong>(<span
-                              data-dz-size>{selectedFile && selectedFile.size_c ? selectedFile.size_c : ''}</span>)</strong>
+                              data-dz-size>{file && file.size_c ? file.size_c : ''}</span>)</strong>
                           </div>
                           <div className="dropzone-error"
-                            data-dz-errormessage>{selectedFile && selectedFile.error ? selectedFile.error : ''}</div>
+                            data-dz-errormessage>{fileError ? fileError: "" } {file && file.error ? file.error : ''}</div>
                         </div>
                         <div className="dropzone-toolbar">
                           <span onClick={(e) => handleFileRemove(e, file.name)}
