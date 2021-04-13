@@ -163,9 +163,9 @@ export function ProductEdit({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productForEdit, id]);
 
-  const saveProduct = (values, productImage) => {
+  const saveProduct = (values, productImage, deletedImg) => {
     
-    let new_values = {...values, "product_images": productImage}
+    let new_values = {...values, "product_images": productImage, "old_images": deletedImg};
 
     if (!id) {
       dispatch(actions.createProduct(new_values)).then((response) => {

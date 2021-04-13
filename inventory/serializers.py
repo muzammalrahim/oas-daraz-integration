@@ -59,20 +59,22 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class InventorySerializer(serializers.ModelSerializer):
-    product_images = ProductImageSerializer(many=True, required=False, allow_null=True)
+    product_images = ProductImageSerializer(many=True, required=False, allow_null=True, write_only=True)
+    old_images = serializers.ListField(required=False, allow_null=True, write_only=True)
 
     def create(self, validated_data):
         part_number = validated_data.get('part_number')
         condition = validated_data.get('condition')
 
+        del validated_data['old_images']
         product_image_data = validated_data.get('product_images', None)
-        del validated_data['product_images']
+        if product_image_data:
+            del validated_data['product_images']
 
         try:
             product = inventory_model.Inventory.objects.filter(part_number=part_number,condition=condition).first()
             product.quantity += validated_data.get('quantity' or 0)
             product.save()
-            # return product
         except:
             product = inventory_model.Inventory.objects.create(**validated_data)
 
@@ -84,11 +86,19 @@ class InventorySerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         product_image_data = validated_data.get('product_images', None)
-        del validated_data['product_images']
+        deleted_img = validated_data.get("old_images", None)
 
         if product_image_data:
+            del validated_data['product_images']
             for product_img in product_image_data:
                 ProductImages.objects.create(product=instance, image=product_img['image'])
+
+        if deleted_img:
+            del validated_data['old_images']
+            for img in deleted_img:
+                img_file = instance.images.filter(image=img.get('name')).first()
+                img_file.image.delete()
+                img_file.delete()
 
         instance = super(InventorySerializer, self).update(instance, validated_data)
         return instance

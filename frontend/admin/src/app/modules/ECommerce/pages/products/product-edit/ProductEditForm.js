@@ -76,6 +76,7 @@ export function ProductEditForm({
   const [productImage, setProductImage] = useState([]);
   const [condition, setCondition] = useState([])
   const [fileError, setFileError] = useState(null)
+  const [deletedImg, setDeletedImg] = useState([]);
 
   useEffect(() => {
     loadModels();
@@ -111,6 +112,7 @@ export function ProductEditForm({
         let img_name = filename_pieces[filename_pieces.length - 1];
         obj.name=img_name;
         obj.path=STATIC_URL + img_name;
+        obj.old_img = true;
         obj._path=product.images[i];
         // setProductImage(prevState => [...prevState, product.images[i]])
         setPreviewFile(prevState=>[...prevState, {...obj}])
@@ -219,6 +221,11 @@ export function ProductEditForm({
     let index = previewFile.findIndex(x => x.name === img_name)
     let obj = previewFile[index];
     let filter_img = productImage.filter(img => img.image !== obj._path['image'])
+
+    if(obj.old_img){
+      setDeletedImg(prevState=>[...prevState, {...obj}])
+    }
+
     setPreviewFile(img_files)
     setProductImage(filter_img);
     // add the delete login
@@ -238,7 +245,7 @@ export function ProductEditForm({
         onSubmit={(values) => {
           // values.product_images = productImage;
           // values.product_title = values.product_title ? values.product_title : values.part_number
-          saveProduct(values, productImage);
+          saveProduct(values, productImage, deletedImg);
         }}
       >
         {({ handleSubmit, setFieldValue, values, }) => (
