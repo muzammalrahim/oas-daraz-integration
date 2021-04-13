@@ -14,6 +14,7 @@ import { Logout, AuthPage } from "./modules/Auth";
 import ErrorsPage from "./modules/ErrorsExamples/ErrorsPage";
 import {ADMIN_ROUTE} from './pages/helper/api'
 
+
 export function Routes() {
     const {isAuthorized} = useSelector(
         ({auth}) => ({
@@ -36,6 +37,8 @@ export function Routes() {
 
             <Route path={"/"+ADMIN_ROUTE+"/error"} component={ErrorsPage}/>
             <Route path={"/"+ADMIN_ROUTE+"/logout"} component={Logout}/>
+            
+            
 
 
             {!isAuthorized ? (

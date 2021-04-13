@@ -11,7 +11,10 @@ distlib==0.3.0
 distro==1.4.0
 Django==3.1.5
 django-constance==2.8.0
+django-cors-headers==3.7.0
 django-environ==0.4.5
+django-filter==2.4.0
+django-picklefield==3.0.1
 django-polymorphic==3.0.0
 django-redis==4.12.1
 django-rest-registration==0.5.6
@@ -32,6 +35,7 @@ Pillow==8.1.0
 progress==1.5
 psycopg2==2.8.6
 pyparsing==2.4.6
+python-dateutil==2.8.1
 pytoml==0.1.21
 pytz==2020.5
 redis==3.5.3
@@ -41,8 +45,8 @@ ruamel.yaml==0.16.12
 ruamel.yaml.clib==0.2.2
 six==1.14.0
 sqlparse==0.4.1
+toml==0.10.2
 typing==3.7.4.3
 uritemplate==3.0.1
 urllib3==1.25.8
 webencodings==0.5.1
-django-filter==2.4.0
