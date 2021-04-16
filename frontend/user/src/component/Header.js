@@ -24,9 +24,9 @@ function Header() {
                         </Col>
                         <Col xs="6">
                             <div className="home-menu">
-                                <Nav className="justify-content-center" activeKey="/home">
+                                <Nav className="justify-content-center" activeKey="/">
                                     <Nav.Item>
-                                        <Nav.Link href="/home"  className="pr-4">Home</Nav.Link>
+                                        <Nav.Link href="/"  className="pr-4">Home</Nav.Link>
                                     </Nav.Item>
 
                                     <Nav.Item>
