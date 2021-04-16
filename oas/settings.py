@@ -198,7 +198,7 @@ AUTH_USER_MODEL = 'user.User'
 
 AUTHENTICATION_BACKENDS = ('utils.backends.EmailBackend',)
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/media/uploads/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/media/uploads') #os operating system
 

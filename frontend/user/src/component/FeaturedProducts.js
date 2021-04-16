@@ -27,6 +27,9 @@ useEffect ( () => {
 
 
     return (
+       
+
+
         <div className="featured-main">
             <Container>
                 <Row>
@@ -35,15 +38,14 @@ useEffect ( () => {
                         <p>Newest trends from top brands</p>
                     </div>
                 </Row>
-                <Row className="pt-4 pb-4">
+                <Row className="products-grid pt-4 pb-4">
                 {products.map(product=> 
                     <Col>
                     {product.featured_product === true &&  <div>
                         <div className="inner-content">
                             <div className="img-wrap">
                                 <figure class="snip0013">
-                    
-                                    <img className="responsive" src={product.product_images[0].image} alt="image"/>
+                                        <img className="responsive-image" src={"http://localhost:8000/static"+product.images[0].image} alt="image"/>
                                     <div>
                                         <ul className="img-hover">
                                             <li><a href="#"><i><FaShoppingCart/></i></a></li>
@@ -53,7 +55,7 @@ useEffect ( () => {
                                     </div>			
                                 </figure>
                                  
-                            </div>
+                                </div>
                             <div className="text pt-3">
                             <h5>{product.product_title}</h5>
                             <p className="mb-1">
