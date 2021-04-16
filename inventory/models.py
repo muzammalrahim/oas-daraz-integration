@@ -152,13 +152,14 @@ class ProductImages(models.Model):
             self.image = self.compressImage(img)
         super().save(*args, **kwargs)
 
-    def compressImage(self,uploadedImage):
+    def compressImage(self, uploadedImage):
         imageTemproary = Image.open(uploadedImage)
         outputIoStream = BytesIO()
         # imageTemproaryResized = imageTemproary.resize( (1020,573) )
         if imageTemproary.mode in ("RGBA", "P"):
             imageTemproary = imageTemproary.convert("RGB")
-        imageTemproary.save(outputIoStream , format='JPEG', quality=70)
+        imageTemproary.save(outputIoStream, format='JPEG', quality=70)
         outputIoStream.seek(0)
-        uploadedImage = InMemoryUploadedFile(outputIoStream,'ImageField', "%s.jpg" % uploadedImage.name.split('.')[0], 'image/jpeg', sys.getsizeof(outputIoStream), None)
+        uploadedImage = InMemoryUploadedFile(outputIoStream, 'ImageField', "%s.jpg" % uploadedImage.name.split('.')[0],
+                                             'image/jpeg', sys.getsizeof(outputIoStream), None)
         return uploadedImage

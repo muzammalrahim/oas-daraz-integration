@@ -30,6 +30,7 @@ class EnquiryViewSet(viewsets.ModelViewSet):
 		inventory_model.Enquiry.objects.filter(id__in=ids).delete()
 		return Response(status=HTTP_200_OK)
 
+
 class ProductEnquiryViewSet(viewsets.ModelViewSet):
 	queryset = inventory_model.ProductEnquiry.objects.all()
 	serializer_class = inventory_serializer.ProductEnquirySerializer
@@ -43,6 +44,7 @@ class ProductEnquiryViewSet(viewsets.ModelViewSet):
 		ids = request.data.get('ids',[])
 		inventory_model.ProductEnquiry.objects.filter(id__in=ids).delete()
 		return Response(status=HTTP_200_OK)
+
 
 class InventoryViewSet(viewsets.ModelViewSet):
 	queryset = inventory_model.Inventory.objects.all()
