@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'constance',
     'user',
     'inventory',
+    'shop_setting',
     'corsheaders',
     'rest_framework',
     'rest_registration',

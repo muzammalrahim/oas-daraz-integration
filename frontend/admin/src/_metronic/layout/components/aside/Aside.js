@@ -347,6 +347,43 @@ export function Aside() {
                 </OverlayTrigger>
               </li>
               {/* end::Item */}
+
+              {/* begin::Item */}
+              <li
+                className="nav-item mb-3"
+                data-toggle="tooltip"
+                data-placement="rigth"
+                data-container="body"
+                data-boundary="window"
+                title="Shop Settings"
+              >
+                <OverlayTrigger
+                  placement="right"
+                  overlay={
+                    <Tooltip id="project-management">
+                     Shop Settings
+                    </Tooltip>
+                  }
+                >
+                  <NavLink
+                    to={"/"+ADMIN_ROUTE+'/settings'}
+                    className="nav-link btn btn-icon btn-clean btn-hover-info btn-lg"
+                    data-toggle="tab"
+                    data-target="#kt_aside_tab_4"
+                    role="tab"
+                  >
+                    <span className="svg-icon svg-icon-lg">
+                      <SVG
+                        src={toAbsoluteUrl(
+                          "/static/media/svg/icons/General/Settings-1.svg"
+                        )}
+                      />
+                    </span>
+                  </NavLink>
+                </OverlayTrigger>
+              </li>
+              {/* end::Item */}
+
               {layoutProps.extrasUserDisplay && <QuickUserToggler />}
 
             </ul>

@@ -6,6 +6,7 @@ import base64, six, uuid
 from django.core.files.base import ContentFile
 from user.serializers import ContactSerializer
 
+
 class Base64ImageField(serializers.ImageField):
 
     def to_internal_value(self, data):
@@ -154,6 +155,7 @@ class EnquirySerializer(serializers.ModelSerializer):
         model = inventory_model.Enquiry
         fields = '__all__'
         depth=1
+
 
 class ProductEnquirySerializer(serializers.ModelSerializer):
 

@@ -3,6 +3,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from django.urls import path, include
 from inventory import views as inventory_views
 from user import views as user_views
+from shop_setting import views as shop_setting_views
 
 router = DefaultRouter()
 
@@ -26,6 +27,8 @@ router.register(r'inventory', inventory_views.InventoryViewSet)
 router.register(r'manufacturer', inventory_views.ManufacturerViewSet)
 router.register(r'product-category', inventory_views.ProductCategoryViewSet)
 
+# router.register(r'shop-setting', shop_setting_views.ShopSettingViewSet)
+
 urlpatterns = format_suffix_patterns([
     path('accounts/', include('rest_registration.api.urls'))
 
@@ -38,4 +41,5 @@ urlpatterns += [
     path('conditions', inventory_views.get_conditions),
     path('api-auth/', include('rest_framework.urls')),
     path('daraz/', include('darazapi.urls')),
+    path('shop-setting/', include('shop_setting.urls')),
 ]
