@@ -826,18 +826,37 @@ figure.snip0013 > div a i:hover{
     
 }
 
-@media only screen and (max-width: 350px) {
-    /* .diamond {
-        top: 24%;
-        left: 24%;
-        height: 150px;
-        width: 150px;
-    }
-    .diamond2 {
-        height: 163px;
-        width: 155px;
-        top: 22.5%;
-        left: 23%;
-    } */
+.products-grid{
+    display: grid !important;
+    grid-template-columns: auto auto auto auto auto;
+    row-gap: 50px;
 }
 
+.responsive-image{
+    width: 200px !important ;
+    height: 200px!important;
+}
+
+
+.responsivee-image img{
+    width: 180px !important;
+    height: 180px!important;
+}
+
+.controls-wrapper {
+    width: 100%;
+  }
+  
+  .carousel-wrapper {
+    width: 100%;
+  }
+  
+
+  .text h5{
+      font-weight: bold;
+  }
+
+  .text p{
+    font-size: 12px;
+    color: #888888;
+  }
