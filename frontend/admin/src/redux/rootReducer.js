@@ -10,6 +10,7 @@ import {suppliersSlice} from "../app/modules/ECommerce/_redux/suppliers/supplier
 import {enquiriesSlice} from "../app/modules/ECommerce/_redux/enquiries/enquiriesSlice";
 import {remarksSlice} from "../app/modules/ECommerce/_redux/remarks/remarksSlice";
 import {specificationsSlice} from "../app/modules/ECommerce/_redux/specifications/specificationsSlice";
+import {shopSettingSlice} from "../app/modules/ECommerce/_redux/shopSetting/shopSettingSlice";
 
 export const rootReducer = combineReducers({
   auth: auth.reducer,
@@ -20,7 +21,8 @@ export const rootReducer = combineReducers({
   suppliers: suppliersSlice.reducer,
   enquiries: enquiriesSlice.reducer,
   remarks: remarksSlice.reducer,
-  specifications: specificationsSlice.reducer
+  specifications: specificationsSlice.reducer,
+  shop_setting: shopSettingSlice.reducer,
 });
 
 export function* rootSaga() {
