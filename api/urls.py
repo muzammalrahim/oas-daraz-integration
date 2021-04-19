@@ -3,7 +3,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from django.urls import path, include
 from inventory import views as inventory_views
 from user import views as user_views
-from shop_setting import views as shop_setting_views
+from shop_setting import views as slider_view
 
 router = DefaultRouter()
 
@@ -42,4 +42,8 @@ urlpatterns += [
     path('api-auth/', include('rest_framework.urls')),
     path('daraz/', include('darazapi.urls')),
     path('shop-setting/', include('shop_setting.urls')),
+    path('products/', inventory_views.get_products, name="get_products"),
+    path("sliders/", slider_view.GetSlidersView.as_view(), name="sliders_view"),
+    path("sliders/create/", slider_view.CreateSlidersView.as_view(), name="create_slider_view"),
+    path("sliders/<int:pk>/", slider_view.UpdateSlidersView.as_view(), name="update_slider_view"),
 ]

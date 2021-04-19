@@ -2,6 +2,7 @@ from rest_framework import serializers
 import base64, six, uuid
 from django.core.files.base import ContentFile
 
+from inventory.models import Inventory
 from shop_setting.models import ShopSetting, Slider
 
 
@@ -55,6 +56,16 @@ class SlidersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Slider
         fields = "__all__"
+
+    def to_representation(self, instance):
+        representation = super(SlidersSerializer, self).to_representation(instance)
+        try:
+            if instance.product:
+                representation['product'] = Inventory.objects.filter(pk=int(instance.product)).values("id", 'product_title')
+        except:
+            representation['product'] = None
+
+        return representation
 
 
 class ShopSettingSerializer(serializers.ModelSerializer):

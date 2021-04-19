@@ -233,3 +233,14 @@ def get_conditions(request):
 	queryset = inventory_model.Inventory.objects.filter(status=1).exclude(condition__isnull=True).values_list('condition', flat=True).distinct()
 	conditions = set(list(dict.fromkeys(queryset))) | set(['NE', 'NS', 'SV', 'AR', 'FN', 'US', 'RP'])
 	return Response({"conditions":conditions}, status=HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_products(request, *args, **kwargs):
+	search = request.query_params.get('search')
+	if search:
+		queryset = Inventory.objects.filter(product_title__icontains=search).values('id', 'product_title')
+		return Response(queryset, status=HTTP_200_OK)
+	else:
+		return Response([])
+

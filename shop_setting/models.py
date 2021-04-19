@@ -14,8 +14,11 @@ class ShopSetting(models.Model):
 
 
 class Slider(models.Model):
-    title = models.CharField(max_length=100, blank=True, null=True)
+    title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
+    btn_title = models.CharField(max_length=100)
+    product = models.CharField(max_length=50, blank=True, null=True)
+    external_link = models.URLField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to="sliders_img", blank=True, null=True)
 
     class Meta:
