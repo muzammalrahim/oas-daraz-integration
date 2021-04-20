@@ -47,6 +47,13 @@ export function del(endpoint, data = {}){
     return axios.put(API_URL + endpoint, config)
 }
 
+export function destory(endpoint){
+    let config = {
+      headers:headers,
+  }
+  return axios.delete(API_URL + endpoint, config)
+}
+
 export const sleep = ms =>
   new Promise(resolve => {
     setTimeout(() => {
