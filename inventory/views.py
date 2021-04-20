@@ -1,14 +1,19 @@
-from rest_framework import viewsets
+from drf_yasg import renderers
+from rest_framework import viewsets, status
 from rest_framework.filters import OrderingFilter
+from rest_framework.views import APIView
+
 from inventory import models as inventory_model
-from inventory.models import Inventory, ProductCategory, Manufacturer
+from inventory.models import Inventory, ProductCategory, Manufacturer, ProductRating
+from inventory.serializers import ProductRatingsSerializer
 from user.models import Supplier
 from inventory import serializers as inventory_serializer
 from oas.pagination import CustomPagination
-from rest_framework.decorators import api_view, action
+from rest_framework.decorators import api_view, action, renderer_classes
 from rest_framework.status import (
 	HTTP_200_OK,
 )
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.request import Request
 from utils import utils
@@ -244,3 +249,39 @@ def get_products(request, *args, **kwargs):
 	else:
 		return Response([])
 
+
+# Deprecated
+class ProductRatingView(generics.CreateAPIView):
+	queryset = Inventory.objects.all()
+	serializer_class = ProductRatingsSerializer
+	lookup_field = "pk"
+
+	def perform_create(self, serializer):
+		serializer.save(user=self.request.user, product=self.get_object())
+
+
+@api_view(['POST'])
+def product_rating_view(request, pk, *args, **kwargs):
+	if not request.user.is_authenticated:
+		return Response({"detail": "Unauthorized user"}, status=status.HTTP_401_UNAUTHORIZED)
+
+	serializer = ProductRatingsSerializer(data=request.data)
+	serializer.is_valid(raise_exception=True)
+	try:
+		product = Inventory.objects.get(pk=pk)
+	except Inventory.DoesNotExist:
+		return Response({"detail", "not found"}, status=status.HTTP_404_NOT_FOUND)
+
+	product_rating = ProductRating.objects.filter(user=request.user, product=product)
+	if not product_rating.exists():
+		serializer.save(product=product, user=request.user)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
+	else:
+		serializer.instance = product_rating.first()
+		serializer.save()
+		return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DeleteRatingView(generics.DestroyAPIView):
+	queryset = ProductRating.objects.all()
+	lookup_field = "pk"

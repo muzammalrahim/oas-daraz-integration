@@ -242,7 +242,7 @@ export function Sliders(){
                 setMessage("Can't delete slider");
                 setMessageType('error');
 
-                console.log("error while deleting ", error.response)
+                // console.log("error while deleting ", error.response)
             })
         }
         
@@ -321,7 +321,7 @@ export function Sliders(){
                 setMessageType('success');
                 setMessage("created successfully");
             }).catch(error=>{
-                console.log("error ", error.response);
+                // console.log("error ", error.response);
                 
                 let errors = error.response.data;
                 const inputs = [...inputList];
@@ -363,7 +363,6 @@ export function Sliders(){
 
     return(
         <>
-        {console.log("slider list ", inputList)}
             <div className="card card-custom">
                 <div className="card-header">
                     <div className="card-title">

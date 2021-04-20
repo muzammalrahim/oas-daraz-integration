@@ -2,6 +2,8 @@ from tempfile import NamedTemporaryFile
 
 from django.core.files import File
 from django.db import models
+
+from user.models import User
 from utils.utils import unique_slugify
 from PIL import Image
 from io import BytesIO
@@ -120,6 +122,7 @@ class Enquiry(models.Model):
         db_table = 'oas_enquiries'
         ordering = ['part_number__part_number','company','email_address','phone_number','country__name','status','-created_at','-updated_at']
 
+
 class ProductEnquiry(models.Model):
     enquiry = models.ForeignKey(Enquiry, on_delete=models.SET_NULL,blank=True, null=True)
     part_number = models.ForeignKey(Inventory, on_delete=models.SET_NULL, blank=True, null=True)
@@ -163,3 +166,15 @@ class ProductImages(models.Model):
         uploadedImage = InMemoryUploadedFile(outputIoStream, 'ImageField', "%s.jpg" % uploadedImage.name.split('.')[0],
                                              'image/jpeg', sys.getsizeof(outputIoStream), None)
         return uploadedImage
+
+
+class ProductRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='product_ratings')
+    product = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name="ratings")
+    rating = models.DecimalField(max_digits=3, decimal_places=2)
+    comment = models.CharField(max_length=2000, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'oas_product_ratings'

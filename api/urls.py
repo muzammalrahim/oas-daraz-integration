@@ -46,4 +46,6 @@ urlpatterns += [
     path("sliders/", slider_view.GetSlidersView.as_view(), name="sliders_view"),
     path("sliders/create/", slider_view.CreateSlidersView.as_view(), name="create_slider_view"),
     path("sliders/<int:pk>/", slider_view.UpdateSlidersView.as_view(), name="update_slider_view"),
+    path('products/<int:pk>/rating/', inventory_views.product_rating_view, name="product_rating"),
+    path('products/rating/<int:pk>/', inventory_views.DeleteRatingView.as_view(), name="delete_product_rating"),
 ]

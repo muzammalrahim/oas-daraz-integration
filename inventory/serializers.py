@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from inventory import models as inventory_model
-from inventory.models import ProductImages
+from inventory.models import ProductImages, ProductRating
+from user.models import User
 from utils import utils
 import base64, six, uuid
 from django.core.files.base import ContentFile
@@ -57,6 +58,24 @@ class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImages
         fields = ("image", )
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        ref_name = 'user'
+        fields = ('username', 'first_name', "last_name", "email")
+
+
+class ProductRatingsSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True, write_only=False, required=False)
+    rating = serializers.DecimalField(max_value=5, min_value=0, max_digits=3, decimal_places=2)
+
+    class Meta:
+        model = ProductRating
+        exclude = ('product', )
+        # fields = "__all__"
 
 
 class InventorySerializer(serializers.ModelSerializer):
@@ -118,6 +137,11 @@ class InventorySerializer(serializers.ModelSerializer):
             representation['images'] = ProductImageSerializer(instance.images, many=True).data
         except:
             representation['images'] = None
+
+        try:
+            representation['ratings'] = ProductRatingsSerializer(instance.ratings, many=True).data
+        except:
+            representation['ratings'] = None
 
         return representation
 

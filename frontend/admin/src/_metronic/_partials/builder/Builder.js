@@ -13,11 +13,87 @@ import {
   setLayoutConfig,
   getInitLayoutConfig,
 } from "../../layout";
+import { Snackbar, SnackbarContent, IconButton } from "@material-ui/core"
+import {
+    Delete as DeleteIcon, Close as CloseIcon, CheckCircle as CheckCircleIcon, Error as ErrorIcon, Info as InfoIcon,
+    Warning as WarningIcon
+  } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import { lighten, makeStyles } from '@material-ui/core/styles';
+import { amber, green } from '@material-ui/core/colors';
 import { Card, CardBody, CardHeader, Notice, Input } from "../controls";
 import { post, list, put } from "../../../app/pages/helper/api";
 import { EventAvailable } from "@material-ui/icons";
 
 const localStorageActiveTabKey = "builderActiveTab";
+
+
+
+const variantIcon = {
+  success: CheckCircleIcon,
+  warning: WarningIcon,
+  error: ErrorIcon,
+  info: InfoIcon,
+};
+
+const useStylesSnackbarContent = makeStyles(theme => ({
+  success: {
+    backgroundColor: green[600],
+  },
+  error: {
+    backgroundColor: theme.palette.error.dark,
+  },
+  info: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  warning: {
+    backgroundColor: amber[700],
+  },
+  icon: {
+    fontSize: 20,
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing(1),
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+}));
+
+function SnackbarContentWrapper(props) {
+  const classes = useStylesSnackbarContent();
+  const { className, message, onClose, variant, ...other } = props;
+  const Icon = variantIcon[variant];
+
+  return (
+    <SnackbarContent
+      className={clsx(classes[variant], className)}
+      aria-describedby="client-snackbar"
+      message={
+        <span id="client-snackbar" className={classes.message}>
+          {/* <Icon className={clsx(classes.icon, classes.iconVariant)} /> */}
+          {message}
+        </span>
+      }
+      action={[
+        <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
+          <CloseIcon className={classes.icon} />
+        </IconButton>,
+      ]}
+      {...other}
+    />
+  );
+}
+
+SnackbarContentWrapper.propTypes = {
+  className: PropTypes.string,
+  message: PropTypes.string,
+  onClose: PropTypes.func,
+  variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
+};
+
 
 export function Builder() {
   const activeTab = localStorage.getItem(localStorageActiveTabKey);
@@ -31,6 +107,11 @@ export function Builder() {
   const [darazMode, setDarazMode] = useState(false)
   const [darazObj, setDarazObj] = useState({userId:"", api_key:""})
   const htmlClassService = useHtmlClassService();
+  
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('success');
+  const [open, setOpen] = useState(false);
+  
   const initialValues = useMemo(
     () =>
       merge(
@@ -129,12 +210,22 @@ export function Builder() {
     post('daraz/products', {
       ...darazObj
     }).then(response=>{
-      console.log(response);
+      setOpen(true);
+      setMessage("Product Added");
+      setMessageType('success');
+      
       setIsLoading(false)
     }).catch(error=>{
-      console.log(error.response)
+      setOpen(true);
+      setMessage(error.response.data['ErrorMessage']);
+      setMessageType('error');
+
       setIsLoading(false)
     })
+  }
+ 
+  const handleCloseSnackbar = (event, reason) => {
+    setOpen(false);
   }
 
   return (
@@ -664,6 +755,21 @@ export function Builder() {
           </>
         )}
       </Formik>
+      <Snackbar
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={open}
+            autoHideDuration={3000}
+            onClose={handleCloseSnackbar}
+          >
+            <SnackbarContentWrapper
+              onClose={handleCloseSnackbar}
+              variant={messageType}
+              message={message}
+            />
+          </Snackbar>
     </>
   );
 }
