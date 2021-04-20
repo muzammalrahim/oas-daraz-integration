@@ -71,6 +71,12 @@ export function ProductsTable() {
       sortCaret: sortCaret,
     },
     {
+      dataField: "product_rating",
+      text: "Rating",
+      sort: true,
+      sortCaret: sortCaret,
+    },
+    {
       dataField: "condition",
       text: "Cond",
       sort: true,
@@ -127,7 +133,7 @@ export function ProductsTable() {
       classes: "text-right pr-0",
       headerClasses: "text-right pr-3",
       style: {
-        minWidth: "100px",
+        minWidth: "140px",
       },
     },
   ];
@@ -139,6 +145,7 @@ export function ProductsTable() {
     sizePerPage: productsUIProps.queryParams.pageSize,
     page: productsUIProps.queryParams.pageNumber,
   };
+
   let data = [];
   return (
     <>

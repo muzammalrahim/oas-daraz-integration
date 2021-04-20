@@ -1,3 +1,5 @@
+from django.db.models import Avg, Sum
+from django.utils.html import strip_tags
 from rest_framework import serializers
 from inventory import models as inventory_model
 from inventory.models import ProductImages, ProductRating
@@ -81,6 +83,7 @@ class ProductRatingsSerializer(serializers.ModelSerializer):
 class InventorySerializer(serializers.ModelSerializer):
     product_images = ProductImageSerializer(many=True, required=False, allow_null=True, write_only=True)
     old_images = serializers.ListField(required=False, allow_null=True, write_only=True)
+    product_rating = serializers.SerializerMethodField(read_only=True, write_only=False)
 
     def create(self, validated_data):
         part_number = validated_data.get('part_number')
@@ -132,7 +135,7 @@ class InventorySerializer(serializers.ModelSerializer):
                 representation[model] = utils.to_dict(getattr(instance, model))
             except:
                 representation[model] = None
-
+        representation['short_description'] = strip_tags(instance.short_description)
         try:
             representation['images'] = ProductImageSerializer(instance.images, many=True).data
         except:
@@ -144,6 +147,13 @@ class InventorySerializer(serializers.ModelSerializer):
             representation['ratings'] = None
 
         return representation
+
+    def get_product_rating(self, instance):
+        ratings = ProductRating.objects.filter(product=instance).values('rating')\
+            .aggregate(rating_avg=Avg('rating'))
+        if ratings['rating_avg'] is not None:
+            return round(ratings['rating_avg'], 2)
+        return 0
 
     class Meta:
         model = inventory_model.Inventory

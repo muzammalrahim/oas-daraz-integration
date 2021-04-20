@@ -88,7 +88,10 @@ export function ProductEditForm({
     })
   }
 
+
   useEffect(() => {
+    setPreviewFile([]);
+
     if (product.id) {
       categories.map(category => {
         if (category.id === product.product_category)
