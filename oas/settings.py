@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'constance',
     'user',
     'inventory',
+    'shop_setting',
     'corsheaders',
     'rest_framework',
     'rest_registration',
@@ -99,6 +100,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
+    "http://localhost:3001",
     "http://127.0.0.1:3000",
 ]
 
@@ -182,10 +184,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'frontend/admin/build/static'),
+    os.path.join(BASE_DIR, 'frontend/user/build/static'),
 )
 
 if DEBUG:
@@ -198,7 +201,7 @@ AUTH_USER_MODEL = 'user.User'
 
 AUTHENTICATION_BACKENDS = ('utils.backends.EmailBackend',)
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/static/media/uploads/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/media/uploads') #os operating system
 

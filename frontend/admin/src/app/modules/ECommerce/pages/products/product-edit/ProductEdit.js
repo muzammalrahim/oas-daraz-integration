@@ -112,13 +112,14 @@ const initProduct = {
   turn_around_time: "",
   // hot_sale_item: "No",
   certification: "",
-  product_image_name: "",
+  // product_image_name: "",
   un_code: "",
   stock_location: "",
   short_description: "",
   product_title: "",
   best_seller: false,
   featured_product: false,
+  images: [],
 };
 
 export function ProductEdit({
@@ -162,10 +163,12 @@ export function ProductEdit({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productForEdit, id]);
 
-  const saveProduct = (values) => {
+  const saveProduct = (values, productImage, deletedImg) => {
+    
+    let new_values = {...values, "product_images": productImage, "old_images": deletedImg};
 
     if (!id) {
-      dispatch(actions.createProduct(values)).then((response) => {
+      dispatch(actions.createProduct(new_values)).then((response) => {
         if (response) {
           setOpen(true)
           setMessage("Can't create Product")
@@ -176,7 +179,7 @@ export function ProductEdit({
       });
     } else {
 
-      dispatch(actions.updateProduct(values)).then((response) => {
+      dispatch(actions.updateProduct(new_values)).then((response) => {
         if (response) {
           setOpen(true)
           setMessage("Can't update Product")

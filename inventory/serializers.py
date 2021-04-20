@@ -1,9 +1,15 @@
+from django.db.models import Avg, Sum
+from django.utils.html import strip_tags
 from rest_framework import serializers
 from inventory import models as inventory_model
+from inventory.models import ProductImages, ProductRating
+from user.models import User
 from utils import utils
 import base64, six, uuid
 from django.core.files.base import ContentFile
 from user.serializers import ContactSerializer
+
+
 class Base64ImageField(serializers.ImageField):
 
     def to_internal_value(self, data):
@@ -48,20 +54,77 @@ class Base64ImageField(serializers.ImageField):
         return super(Base64ImageField, self).from_native(data)
 
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    image = Base64ImageField(max_length=None, allow_null=True, use_url=True, required=False)
+
+    class Meta:
+        model = ProductImages
+        fields = ("image", )
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        ref_name = 'user'
+        fields = ('username', 'first_name', "last_name", "email")
+
+
+class ProductRatingsSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True, write_only=False, required=False)
+    rating = serializers.DecimalField(max_value=5, min_value=0, max_digits=3, decimal_places=2)
+
+    class Meta:
+        model = ProductRating
+        exclude = ('product', )
+        # fields = "__all__"
+
+
 class InventorySerializer(serializers.ModelSerializer):
-    product_image = Base64ImageField(max_length=None, allow_null=True, use_url=True, required=False)
+    product_images = ProductImageSerializer(many=True, required=False, allow_null=True, write_only=True)
+    old_images = serializers.ListField(required=False, allow_null=True, write_only=True)
+    product_rating = serializers.SerializerMethodField(read_only=True, write_only=False)
 
     def create(self, validated_data):
         part_number = validated_data.get('part_number')
         condition = validated_data.get('condition')
 
+        del validated_data['old_images']
+        product_image_data = validated_data.get('product_images', None)
+        if product_image_data:
+            del validated_data['product_images']
+
         try:
             product = inventory_model.Inventory.objects.filter(part_number=part_number,condition=condition).first()
             product.quantity += validated_data.get('quantity' or 0)
             product.save()
-            return product
         except:
-            return inventory_model.Inventory.objects.create(**validated_data)
+            product = inventory_model.Inventory.objects.create(**validated_data)
+
+        if product_image_data:
+            for product_image in product_image_data:
+                ProductImages.objects.create(product=product, image=product_image['image'])
+
+        return product
+
+    def update(self, instance, validated_data):
+        product_image_data = validated_data.get('product_images', None)
+        deleted_img = validated_data.get("old_images", None)
+
+        if product_image_data:
+            del validated_data['product_images']
+            for product_img in product_image_data:
+                ProductImages.objects.create(product=instance, image=product_img['image'])
+
+        if deleted_img:
+            del validated_data['old_images']
+            for img in deleted_img:
+                img_file = instance.images.filter(image=img.get('name')).first()
+                img_file.image.delete()
+                img_file.delete()
+
+        instance = super(InventorySerializer, self).update(instance, validated_data)
+        return instance
 
     def to_representation(self, instance):
         representation = super(InventorySerializer, self).to_representation(instance)
@@ -72,20 +135,33 @@ class InventorySerializer(serializers.ModelSerializer):
                 representation[model] = utils.to_dict(getattr(instance, model))
             except:
                 representation[model] = None
+        representation['short_description'] = strip_tags(instance.short_description)
+        try:
+            representation['images'] = ProductImageSerializer(instance.images, many=True).data
+        except:
+            representation['images'] = None
+
+        try:
+            representation['ratings'] = ProductRatingsSerializer(instance.ratings, many=True).data
+        except:
+            representation['ratings'] = None
 
         return representation
 
-
+    def get_product_rating(self, instance):
+        ratings = ProductRating.objects.filter(product=instance).values('rating')\
+            .aggregate(rating_avg=Avg('rating'))
+        if ratings['rating_avg'] is not None:
+            return round(ratings['rating_avg'], 2)
+        return 0
 
     class Meta:
         model = inventory_model.Inventory
-        fields = '__all__'
+        fields = "__all__"
 
 
 class EnquirySerializer(serializers.ModelSerializer):
     # def create(self, validated_data):
-
-
 
     def to_representation(self, instance):
         representation = super(EnquirySerializer, self).to_representation(instance)
@@ -113,6 +189,7 @@ class EnquirySerializer(serializers.ModelSerializer):
         model = inventory_model.Enquiry
         fields = '__all__'
         depth=1
+
 
 class ProductEnquirySerializer(serializers.ModelSerializer):
 

@@ -2,6 +2,8 @@ import React, { Suspense, lazy } from "react";
 import { Redirect, Switch, Route } from "react-router-dom";
 import { LayoutSplashScreen, ContentRoute } from "../_metronic/layout";
 import { BuilderPage } from "./pages/BuilderPage";
+import { ShopSettingsPage} from "./pages/ShopSettingsPage";
+import { SliderPage } from './pages/SliderPage'; 
 import { MyPage } from "./pages/MyPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import {ADMIN_ROUTE} from './pages/helper/api'
@@ -52,6 +54,8 @@ export default function BasePage() {
         <Redirect exact from={"/"+ADMIN_ROUTE} to={"/"+ADMIN_ROUTE+"/dashboard"} />
         <ContentRoute path={"/"+ADMIN_ROUTE+"/dashboard"} component={DashboardPage} />
         <ContentRoute path={"/"+ADMIN_ROUTE+"/builder"} component={BuilderPage} />
+        <ContentRoute path={"/"+ADMIN_ROUTE+"/settings"} component={ShopSettingsPage} />
+        <ContentRoute path={"/"+ADMIN_ROUTE+"/sliders"} component={SliderPage} />
         <ContentRoute path={"/"+ADMIN_ROUTE+"/my-page"} component={MyPage} />
         <Route path={"/"+ADMIN_ROUTE+"/suppliers"} component={SuppliersPages} />
         <Route path={"/"+ADMIN_ROUTE+"/orders"} component={EnquiriesPages} />

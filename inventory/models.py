@@ -1,9 +1,16 @@
+from tempfile import NamedTemporaryFile
+
+from django.core.files import File
 from django.db import models
+
+from user.models import User
 from utils.utils import unique_slugify
 from PIL import Image
 from io import BytesIO
-import os, sys
+import sys
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from urllib import request
+
 
 class Manufacturer(models.Model):
     name = models.CharField(max_length=191)
@@ -76,7 +83,7 @@ class Inventory(models.Model):
     #     ('No', 'No')
     # )
     # hot_sale_item = models.CharField(choices=HOT_SALE_CHOICES, max_length=5, blank=True, null=True)
-    product_image = models.ImageField(max_length=191, blank=True, null=True)
+    # product_image = models.ImageField(max_length=191, blank=True, null=True)
     supplier = models.ForeignKey('user.Supplier', on_delete=models.SET_NULL, blank=True, null=True)
     product_category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, blank=True, null=True)
     product_manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL, blank=True, null=True)
@@ -87,22 +94,6 @@ class Inventory(models.Model):
     featured_product = models.BooleanField(default=False)
     daraz_product = models.BooleanField(default=False)
     daraz_id = models.IntegerField(null=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        if not self.id and self.product_image and self.product_image is not None:
-            self.product_image = self.compressImage(self.product_image)
-        super().save(*args, **kwargs)
-
-    def compressImage(self,uploadedImage):
-        imageTemproary = Image.open(uploadedImage)
-        outputIoStream = BytesIO()
-        # imageTemproaryResized = imageTemproary.resize( (1020,573) ) 
-        if imageTemproary.mode in ("RGBA", "P"):
-            imageTemproary = imageTemproary.convert("RGB")
-        imageTemproary.save(outputIoStream , format='JPEG', quality=70)
-        outputIoStream.seek(0)
-        uploadedImage = InMemoryUploadedFile(outputIoStream,'ImageField', "%s.jpg" % uploadedImage.name.split('.')[0], 'image/jpeg', sys.getsizeof(outputIoStream), None)
-        return uploadedImage
 
     class Meta:
         db_table = 'oas_inventory'
@@ -131,6 +122,7 @@ class Enquiry(models.Model):
         db_table = 'oas_enquiries'
         ordering = ['part_number__part_number','company','email_address','phone_number','country__name','status','-created_at','-updated_at']
 
+
 class ProductEnquiry(models.Model):
     enquiry = models.ForeignKey(Enquiry, on_delete=models.SET_NULL,blank=True, null=True)
     part_number = models.ForeignKey(Inventory, on_delete=models.SET_NULL, blank=True, null=True)
@@ -141,3 +133,48 @@ class ProductEnquiry(models.Model):
     class Meta:
         db_table = 'oas_productenquiries'
         ordering = ['enquiry__status','part_number__part_number','-created_at','-updated_at']
+
+
+class ProductImages(models.Model):
+    product = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name="images", blank=True, null=True)
+    image = models.ImageField(max_length=191, blank=True, null=True)
+
+    class Meta:
+        db_table = 'oas_product_images'
+
+    def save(self, *args, **kwargs):
+        if not self.id and self.image and self.image is not None:
+            if self.product.daraz_product:
+                url = self.image.url.replace("/media/https%3A", 'https:/')
+                img_temp = NamedTemporaryFile(delete=True)
+                img_temp.write(request.urlopen(url).read())
+                img_temp.flush()
+                img = File(img_temp)
+            else:
+                img = self.image
+            self.image = self.compressImage(img)
+        super().save(*args, **kwargs)
+
+    def compressImage(self, uploadedImage):
+        imageTemproary = Image.open(uploadedImage)
+        outputIoStream = BytesIO()
+        # imageTemproaryResized = imageTemproary.resize( (1020,573) )
+        if imageTemproary.mode in ("RGBA", "P"):
+            imageTemproary = imageTemproary.convert("RGB")
+        imageTemproary.save(outputIoStream, format='JPEG', quality=70)
+        outputIoStream.seek(0)
+        uploadedImage = InMemoryUploadedFile(outputIoStream, 'ImageField', "%s.jpg" % uploadedImage.name.split('.')[0],
+                                             'image/jpeg', sys.getsizeof(outputIoStream), None)
+        return uploadedImage
+
+
+class ProductRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='product_ratings')
+    product = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name="ratings")
+    rating = models.DecimalField(max_digits=3, decimal_places=2)
+    comment = models.CharField(max_length=2000, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'oas_product_ratings'

@@ -53,3 +53,7 @@ uritemplate==3.0.1
 urllib3==1.25.8
 webencodings==0.5.1
 zipp==3.4.1
+<<<<<<< HEAD
+=======
+
+>>>>>>> master

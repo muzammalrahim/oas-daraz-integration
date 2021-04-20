@@ -10,9 +10,11 @@ import { Routes } from "../app/Routes";
 import { I18nProvider } from "../_metronic/i18n";
 import { LayoutSplashScreen, MaterialThemeProvider } from "../_metronic/layout";
 
+
 export default function App({ store, persistor, basename }) {
   return (
     /* Provide Redux store */
+
     <Provider store={store}>
       {/* Asynchronously persist redux stores and show `SplashScreen` while it's loading. */}
       <PersistGate persistor={persistor} loading={<LayoutSplashScreen />}>
