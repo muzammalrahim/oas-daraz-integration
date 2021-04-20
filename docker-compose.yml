@@ -21,7 +21,7 @@ services:
     depends_on:
       - db
 
-  frontend:
+  admin:
     build: ./frontend/admin
     command: npm start
     volumes:
@@ -29,6 +29,17 @@ services:
       - node_modules:/app/frontend/node_modules
     ports:
       - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+  
+  frontend:
+    build: ./frontend/user
+    command: npm start
+    volumes:
+      - './frontend/user:/app/user'
+      - node_modules:/app/user/node_modules
+    ports:
+      - "3001:3001"
     environment:
       - CHOKIDAR_USEPOLLING=true
 
