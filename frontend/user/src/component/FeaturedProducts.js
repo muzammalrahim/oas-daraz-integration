@@ -11,24 +11,32 @@ import { API_URL} from "../helper/api"
 export default function FeaturedProducts(props) {
 
 const [products, setProducts] = useState([]);
+const [lengthh, setLengthh] = useState([]);
 
 
 const getProducts = async () => {
     const response = await fetch (API_URL+"inventory/");
     const data = await response.json();
     setProducts(data.results);
-
 }
+
+const getLengthh = async () => {
+    const response = await fetch (API_URL+"shop-setting/");
+    const data = await response.json();
+    setLengthh(data);
+    console.log(data)
+}
+
 
 useEffect ( () => {
     getProducts();
+    getLengthh();
 }, [] );
 
-
+console.log("Length",lengthh.featured_product);
 
     return (
-       
-
+    
 
         <div className="featured-main">
             <Container>
@@ -39,9 +47,13 @@ useEffect ( () => {
                     </div>
                 </Row>
                 <Row className="products-grid pt-4 pb-4">
-                {products.map(product=> 
+                {
+                products.map((product,index)=> 
+                  <div>
+                      { lengthh.featured_product > index &&
                     <Col>
-                    {product.featured_product === true &&  <div>
+                    {product.featured_product === true && <div>
+                    
                         <div className="inner-content">
                             <div className="img-wrap">
                                 <figure class="snip0013">
@@ -69,7 +81,8 @@ useEffect ( () => {
                             />
                         </div>
                         </div>}
-                    </Col>)}
+                    </Col>} </div>)
+                    }
                     
                    
             </Row>
