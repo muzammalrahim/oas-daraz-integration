@@ -75,9 +75,11 @@ console.log("Length",lengthh.featured_product);
                             </p> 
                             </div>
                             <Rating
-                            value={3}
+                            value={product.product_rating}
                             max={5}
-                            onChange={(i) => console.log('onChange ' + i)}
+                            editing={false}
+                            onStarHover={false}
+                            
                             />
                         </div>
                         </div>}
