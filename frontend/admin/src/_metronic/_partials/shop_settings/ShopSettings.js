@@ -90,8 +90,15 @@ function SnackbarContentWrapper(props) {
 export function ShopSettings(){
 
     const initialValue = {
-        logo:"",
+        logo:null,
         featured_product:"",
+        phone_number:"",
+        email:"",
+        address:"",
+        facebook_url:"",
+        twitter_url:"",
+        instagram_url:"",
+        blog_url:"",
     }
 
     const [logoFile, setLogoFile] = useState({});
@@ -100,6 +107,7 @@ export function ShopSettings(){
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
     const [open, setOpen] = useState(false);
+    const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
 
     const { loading, error, setting } = useSelector(
@@ -176,6 +184,41 @@ export function ShopSettings(){
         setOpen(false);
     }
 
+    function validateEmail(email) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    function validate(){
+      const errors = {};
+      if(settings['phone_number'] === "")
+          errors['phone_number'] = "This field is required."
+      else
+        delete errors['phone_number']
+      
+      if(settings['email'] === "")
+        errors['email'] = "This field is required."
+      else{
+        if(!validateEmail(settings['email'])){
+          errors['email'] = "Enter a valid email."
+        }
+        else
+          delete errors['email']
+      }
+
+      if(settings['address'] === "")
+        errors['address'] = "This field is required."
+      else
+        delete errors['address']
+
+      if(settings['featured_product'] === "")
+        errors['featured_product'] = "This field is required."
+      else
+        delete errors['featured_product']
+
+      return errors;
+  }
+
     const saveSetting = (event) => {
         event.preventDefault();
         if(isLogoImg){
@@ -183,6 +226,12 @@ export function ShopSettings(){
         }
         if(!isLogoImg && setting.logo && Object.keys(logoFile).length === 0 && logoFile.constructor === Object){
             settings['logo'] = null;
+        }
+      
+        const errors = validate();
+        setErrors(errors);
+        if(Object.keys(errors).length !== 0){
+          return ;
         }
 
         if(setting.id){
@@ -277,9 +326,54 @@ export function ShopSettings(){
                             <label>No. of featured Products</label>
                             <input type="number" name="featured_product" value={settings.featured_product} className="form-control" 
                             placeholder="No. of featured products on homepage default 8" onChange={onChange} />
+                            {errors && <div className="invalid-feedback" style={{display:'block'}} >{errors.featured_product}</div>}
                         </div>
                     </div>
-                 
+                    <hr/>
+                    <div className="row mt-5">
+                        <div className="form-group col-lg-4">
+                            <label>Phone Number</label>
+                            <input type="text" name="phone_number" value={settings.phone_number} className="form-control" 
+                            placeholder="Phone Number" onChange={onChange} />
+                            {errors && <div className="invalid-feedback" style={{display:'block'}} >{errors.phone_number}</div>}
+                        </div>
+                        <div className="form-group col-lg-4">
+                            <label>Email</label>
+                            <input type="text" name="email" value={settings.email} className="form-control" 
+                            placeholder="Email" onChange={onChange} />
+                            {errors && <div className="invalid-feedback" style={{display:'block'}} >{errors.email}</div>}
+                        </div>
+                        <div className="form-group col-lg-4">
+                            <label>Address</label>
+                            <input type="text" name="address" value={settings.address} className="form-control" 
+                            placeholder="Address" onChange={onChange} />
+                            {errors && <div className="invalid-feedback" style={{display:'block'}} >{errors.address}</div>}
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div className="row">
+                        <div className="form-group col-lg-6">
+                            <label>Facebook URL</label>
+                            <input type="text" name="facebook_url" value={settings.facebook_url} className="form-control" 
+                            placeholder="Facebook URL" onChange={onChange} />
+                        </div>
+                        <div className="form-group col-lg-6">
+                            <label>Twitter URL</label>
+                            <input type="text" name="twitter_url" value={settings.twitter_url} className="form-control" 
+                            placeholder="Twitter URL" onChange={onChange} />
+                        </div>
+                        <div className="form-group col-lg-6">
+                            <label>Instagram URL</label>
+                            <input type="text" name="instagram_url" value={settings.instagram_url} className="form-control" 
+                            placeholder="Instagram URL" onChange={onChange} />
+                        </div>
+                        <div className="form-group col-lg-6">
+                            <label>Blog URL</label>
+                            <input type="text" name="blog_url" value={settings.blog_url} className="form-control" 
+                            placeholder="Blog URL" onChange={onChange} />
+                        </div>
+                    </div>
                  </form>
                </div>
             </div>
