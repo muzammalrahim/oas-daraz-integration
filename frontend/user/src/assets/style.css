@@ -865,3 +865,11 @@ figure.snip0013 > div a i:hover{
       justify-content: center;
       align-items: center;
   }
+
+  .slick-next:before, .slick-prev:before {
+      color: black !important;
+  }
+
+  .slick-prev {
+    left: -63px !important;
+}
