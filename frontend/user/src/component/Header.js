@@ -33,11 +33,9 @@ export default function Header(props) {
             <div className="header p-3">
                 <Container fluid>
                     {/* web menu */}
-                    <div className="web-menu">
-                    <Row>  
-                        
+                    <div className="row web-menu">
                         <Col xs="3">
-                        <img src={lengthh.logo} alt="image"/>
+                        <img class="main-logo" src={lengthh.logo} alt="logo"/>
                         </Col>
                         <Col xs="6">
                             <div className="home-menu">
@@ -63,21 +61,12 @@ export default function Header(props) {
                         </Col>
                         <Col xs="3">
                             <div className="float-right menu-right-icons">
-                               <span className="pr-3"><FaSearch/>
-                                
-                               </span> 
+                               <span className="pr-3"><FaSearch/></span> 
                                <span className=""><Card /></span>
                                <span className="cart-main"><Cart/></span>
-                               
-                               
-                               
-                               
                             </div> 
                         </Col> 
-                        
-                        
-                    </Row>
-                    </div>
+                        </div> 
                     {/* web menu */}
 
                     {/* Mobile menu */}
