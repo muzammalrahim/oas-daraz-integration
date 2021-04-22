@@ -24,7 +24,7 @@ def get_products(request):
         r = httpResuest.get(url=URL, params=parameter)
         data = r.json()
         if 'ErrorResponse' in data.keys():
-            return Response(data['ErrorResponse']['Head'])
+            return Response(data['ErrorResponse']['Head'], status=500)
         if 'SuccessResponse' in data.keys():
             data = (data['SuccessResponse']['Body'])
             products = data['Products']
@@ -46,7 +46,7 @@ def get_products(request):
                         for img_url in product['Skus'][0]['Images']:
                             ProductImages.objects.create(image=img_url, product=inventory)
 
-                return Response({"success": True})
+                return Response({"success": True}, status=200)
             else:
                 return Response({"detail": "No product found"})
 

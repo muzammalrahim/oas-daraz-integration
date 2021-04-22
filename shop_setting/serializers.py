@@ -2,6 +2,7 @@ from rest_framework import serializers
 import base64, six, uuid
 from django.core.files.base import ContentFile
 
+from inventory.models import Inventory
 from shop_setting.models import ShopSetting, Slider
 
 
@@ -56,52 +57,20 @@ class SlidersSerializer(serializers.ModelSerializer):
         model = Slider
         fields = "__all__"
 
+    def to_representation(self, instance):
+        representation = super(SlidersSerializer, self).to_representation(instance)
+        try:
+            if instance.product:
+                representation['product'] = Inventory.objects.filter(pk=int(instance.product)).values("id", 'product_title')
+        except:
+            representation['product'] = None
+
+        return representation
+
 
 class ShopSettingSerializer(serializers.ModelSerializer):
     logo = Base64ImageField(max_length=None, allow_null=True, use_url=True, required=False)
 
-    # def create(self, validated_data):
-    #
-    #     slider_image_data = validated_data.get('slider_images', None)
-    #     del validated_data['old_images']
-    #     del validated_data['slider_images']
-    #
-    #     setting = ShopSetting.objects.create(**validated_data)
-    #
-    #     if slider_image_data:
-    #         for img in slider_image_data:
-    #             SliderImages.objects.create(setting=setting, image=img['image'])
-    #
-    #     return setting
-    #
-    # def update(self, instance, validated_data):
-    #     slider_image_data = validated_data.get('slider_images', None)
-    #     deleted_img = validated_data.get("old_images", None)
-    #
-    #     if slider_image_data:
-    #         del validated_data['slider_images']
-    #         for img in slider_image_data:
-    #             SliderImages.objects.create(setting=instance, image=img['image'])
-    #
-    #     if deleted_img:
-    #         del validated_data['old_images']
-    #         for img in deleted_img:
-    #             name = "sliders_img/" + img.get('name')
-    #             img_file = instance.sliders.filter(image=name).first()
-    #             img_file.image.delete()
-    #             img_file.delete()
-    #
-    #     instance = super(ShopSettingSerializer, self).update(instance, validated_data)
-    #     return instance
-    #
-    # def to_representation(self, instance):
-    #     representation = super(ShopSettingSerializer, self).to_representation(instance)
-    #     try:
-    #         representation['sliders'] = SliderImagesSerializer(instance.sliders, many=True).data
-    #     except:
-    #         representation['sliders'] = None
-    #     return representation
-    #
     class Meta:
         model = ShopSetting
         fields = "__all__"

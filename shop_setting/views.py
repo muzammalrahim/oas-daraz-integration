@@ -1,6 +1,6 @@
 from rest_framework import generics
-from shop_setting.models import ShopSetting
-from shop_setting.serializers import ShopSettingSerializer
+from shop_setting.models import ShopSetting, Slider
+from shop_setting.serializers import ShopSettingSerializer, SlidersSerializer
 
 
 # class ShopSettingViewSet(viewsets.ModelViewSet):
@@ -25,3 +25,19 @@ class GetShopSetting(generics.RetrieveUpdateAPIView):
 
 class CreateShopSetting(generics.CreateAPIView):
     serializer_class = ShopSettingSerializer
+
+
+class GetSlidersView(generics.ListAPIView):
+    queryset = Slider.objects.all().order_by('id')
+    serializer_class = SlidersSerializer
+
+
+class CreateSlidersView(generics.CreateAPIView):
+    queryset = Slider.objects.all()
+    serializer_class = SlidersSerializer
+
+
+class UpdateSlidersView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Slider.objects.all()
+    serializer_class = SlidersSerializer
+    lookup_field = 'pk'

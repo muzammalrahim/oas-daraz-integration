@@ -1,6 +1,9 @@
+from django.db.models import Avg, Sum
+from django.utils.html import strip_tags
 from rest_framework import serializers
 from inventory import models as inventory_model
-from inventory.models import ProductImages
+from inventory.models import ProductImages, ProductRating
+from user.models import User
 from utils import utils
 import base64, six, uuid
 from django.core.files.base import ContentFile
@@ -59,9 +62,28 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = ("image", )
 
 
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        ref_name = 'user'
+        fields = ('username', 'first_name', "last_name", "email")
+
+
+class ProductRatingsSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True, write_only=False, required=False)
+    rating = serializers.DecimalField(max_value=5, min_value=0, max_digits=3, decimal_places=2)
+
+    class Meta:
+        model = ProductRating
+        exclude = ('product', )
+        # fields = "__all__"
+
+
 class InventorySerializer(serializers.ModelSerializer):
     product_images = ProductImageSerializer(many=True, required=False, allow_null=True, write_only=True)
     old_images = serializers.ListField(required=False, allow_null=True, write_only=True)
+    product_rating = serializers.SerializerMethodField(read_only=True, write_only=False)
 
     def create(self, validated_data):
         part_number = validated_data.get('part_number')
@@ -113,13 +135,25 @@ class InventorySerializer(serializers.ModelSerializer):
                 representation[model] = utils.to_dict(getattr(instance, model))
             except:
                 representation[model] = None
-
+        representation['short_description'] = strip_tags(instance.short_description)
         try:
             representation['images'] = ProductImageSerializer(instance.images, many=True).data
         except:
             representation['images'] = None
 
+        try:
+            representation['ratings'] = ProductRatingsSerializer(instance.ratings, many=True).data
+        except:
+            representation['ratings'] = None
+
         return representation
+
+    def get_product_rating(self, instance):
+        ratings = ProductRating.objects.filter(product=instance).values('rating')\
+            .aggregate(rating_avg=Avg('rating'))
+        if ratings['rating_avg'] is not None:
+            return round(ratings['rating_avg'], 2)
+        return 0
 
     class Meta:
         model = inventory_model.Inventory
