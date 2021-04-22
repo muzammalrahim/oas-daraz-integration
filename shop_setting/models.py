@@ -8,6 +8,13 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 class ShopSetting(models.Model):
     logo = models.ImageField(upload_to='logo', max_length=191, blank=True, null=True)
     featured_product = models.IntegerField(blank=True, null=True)
+    phone_number = models.CharField(max_length=100)
+    email = models.EmailField(max_length=255)
+    address = models.CharField(max_length=255)
+    facebook_url = models.URLField(max_length=255, blank=True, null=True)
+    twitter_url = models.URLField(max_length=255, blank=True, null=True)
+    instagram_url = models.URLField(max_length=255, blank=True, null=True)
+    blog_url = models.URLField(max_length=255, blank=True, null=True)
 
     class Meta:
         db_table = 'oas_shop_setting'

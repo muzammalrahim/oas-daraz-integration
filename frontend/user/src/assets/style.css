@@ -111,7 +111,7 @@ ul.categories li{
     left: 0;
 }
 .image{
-    background: url('../images/123.jpg');
+
     background-repeat:no-repeat ;
     height: 700px;
     width: 100%;
@@ -860,3 +860,16 @@ figure.snip0013 > div a i:hover{
     font-size: 12px;
     color: #888888;
   }
+
+  .web-menu{
+      justify-content: center;
+      align-items: center;
+  }
+
+  .slick-next:before, .slick-prev:before {
+      color: black !important;
+  }
+
+  .slick-prev {
+    left: -63px !important;
+}

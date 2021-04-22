@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react'
 import {Row, Col, Container } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -7,20 +7,35 @@ import { FaSearch, FaBars, FaShoppingCart} from "react-icons/fa";
 import Card from '../component/SideNavpage';
 import Cart from '../component/Cart';
 import "../assets/style.css"
+import { API_URL} from "../helper/api"
 
 
+export default function Header(props) {
 
-function Header() {
-    return (
+    const [lengthh, setLengthh] = useState([]);
+
+    const getLengthh = async () => {
+        const response = await fetch (API_URL+"shop-setting/");
+        const data = await response.json();
+        setLengthh(data);
+    }
+    
+    useEffect ( () => {
+        getLengthh();
+    }, [] );
+    
+    
+        return (
+
+      
+
         <div className="header-main">
             <div className="header p-3">
                 <Container fluid>
                     {/* web menu */}
-                    <div className="web-menu">
-                    <Row>  
-                        
+                    <div className="row web-menu">
                         <Col xs="3">
-                            <h2>LOGO</h2>
+                        <img class="main-logo" src={lengthh.logo} alt="logo"/>
                         </Col>
                         <Col xs="6">
                             <div className="home-menu">
@@ -46,21 +61,12 @@ function Header() {
                         </Col>
                         <Col xs="3">
                             <div className="float-right menu-right-icons">
-                               <span className="pr-3"><FaSearch/>
-                                
-                               </span> 
+                               <span className="pr-3"><FaSearch/></span> 
                                <span className=""><Card /></span>
                                <span className="cart-main"><Cart/></span>
-                               
-                               
-                               
-                               
                             </div> 
                         </Col> 
-                        
-                        
-                    </Row>
-                    </div>
+                        </div> 
                     {/* web menu */}
 
                     {/* Mobile menu */}
@@ -119,4 +125,4 @@ function Header() {
     )
 }
 
-export default Header
+
