@@ -873,3 +873,7 @@ figure.snip0013 > div a i:hover{
   .slick-prev {
     left: -63px !important;
 }
+
+.none{
+    display: none;
+}
