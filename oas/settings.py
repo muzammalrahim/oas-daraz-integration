@@ -160,15 +160,15 @@ REST_REGISTRATION = {
     'USER_LOGIN_FIELDS': ('email', 'username'),
 }
 
-# SWAGGER_SETTINGS = {
-#     'SECURITY_DEFINITIONS': {
-#         'basic': {
-#             'type': 'basic'
-#         }
-#     },
-#     'USE_SESSION_AUTH': False,
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+    'USE_SESSION_AUTH': False,
 
-# }
+}
 
 LANGUAGE_CODE = 'en-us'
 
