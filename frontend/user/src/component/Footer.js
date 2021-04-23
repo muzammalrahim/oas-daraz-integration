@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React from 'react'
 import {Row, Col, Container } from 'react-bootstrap';
 import {Link} from 'react-router-dom'
 import { FaCcVisa, FaCcPaypal,FaCcAmazonPay } from "react-icons/fa"
@@ -6,26 +6,11 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
-import { FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaBlog, FaGlobeAsia } from "react-icons/fa";
-import "../assets/style.css"
-import { API_URL} from "../helper/api"
+import { FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaGlobeAsia } from "react-icons/fa";
 
 
-export default function Header() {
 
-    const [lengthh, setLengthh] = useState([]);
-
-    const getLengthh = async () => {
-        const response = await fetch (API_URL+"shop-setting/");
-        const data = await response.json();
-        setLengthh(data);
-    }
-    
-    useEffect ( () => {
-        getLengthh();
-    }, [] );
-    
-
+function Footer() {
     return (
         <div className="footer-main pt-3">
 
@@ -70,15 +55,16 @@ export default function Header() {
                     <Col xs="6" sm="3">
                         <ul>
                             <h4>Contact Info</h4>
-                            <li><Link><FaGlobeAsia/><span className="pl-2">{lengthh.address}</span></Link></li>
-                            <li><Link><FaPhoneAlt/><span className="pl-2">{lengthh.phone_number}</span></Link></li>
-                            <li><Link> <FaEnvelope/><span className="pl-2">{lengthh.email}</span></Link></li>
+                            <li><Link><FaGlobeAsia/><span className="pl-2">1234 Your Address, Country.</span></Link></li>
+                            <li><Link><FaPhoneAlt/><span className="pl-2">+1 234 5678 9999</span></Link></li>
+                            <li><Link> <FaEnvelope/><span className="pl-2">mail@domain.com</span></Link></li>
                         </ul>
                         <ul className="m-0 footer-social-links">
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaFacebookF/></li></a> : <li className="none"></li> }
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaTwitter/></li></a> : <li className="none"></li> }
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaInstagram/></li></a> : <li className="none"></li> }
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaBlog/></li></a> : <li className="none"></li> }
+                                <li className="pr-2"><FaFacebookF/></li>
+                                <li className="pr-2"><FaTwitter/></li>
+                                <li className="pr-2"><FaInstagram/></li>
+                                <li><FaLinkedinIn/></li>
+                            
                         </ul>
                     </Col>
                 </Row>
@@ -151,15 +137,15 @@ export default function Header() {
                         <Card.Body>
                         <ul className="pl-0">
                             
-                            <li><Link><FaGlobeAsia/><span className="pl-2">{lengthh.address}</span></Link></li>
-                            <li><Link><FaPhoneAlt/><span className="pl-2">{lengthh.phone_number}</span></Link></li>
-                            <li><Link> <FaEnvelope/><span className="pl-2">{lengthh.email}</span></Link></li>
+                            <li><Link><FaGlobeAsia/><span className="pl-2">1234 Your Address, Country.</span></Link></li>
+                            <li><Link><FaPhoneAlt/><span className="pl-2">+1 234 5678 9999</span></Link></li>
+                            <li><Link> <FaEnvelope/><span className="pl-2">mail@domain.com</span></Link></li>
                         </ul>
                         <ul className="m-0 footer-social-links pl-0">
-                        {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaFacebookF/></li></a> : <li className="none"></li> }
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaTwitter/></li></a> : <li className="none"></li> }
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaInstagram/></li></a> : <li className="none"></li> }
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaBlog/></li></a> : <li className="none"></li> }
+                                <li className="pr-2"><FaFacebookF/></li>
+                                <li className="pr-2"><FaTwitter/></li>
+                                <li className="pr-2"><FaInstagram/></li>
+                                <li><FaLinkedinIn/></li>
                             
                         </ul>
                         </Card.Body>
@@ -196,4 +182,4 @@ export default function Header() {
     )
 }
 
-
+export default Footer

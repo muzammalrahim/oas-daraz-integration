@@ -4,8 +4,6 @@ import {Link} from 'react-router-dom'
 import { FaCcVisa, FaCcPaypal,FaCcAmazonPay } from "react-icons/fa"
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import "../assets/style.css"
-
 
 function GetCoupen() {
     return (

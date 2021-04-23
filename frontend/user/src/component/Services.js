@@ -3,7 +3,6 @@ import {Row, Col, Container } from 'react-bootstrap';
 import {FaRegGem, FaPaperPlane} from "react-icons/fa";
 import { AiOutlineRetweet, AiFillRocket } from "react-icons/ai";
 import { SiSketch } from "react-icons/si";
-import "../assets/style.css"
 
 
 
