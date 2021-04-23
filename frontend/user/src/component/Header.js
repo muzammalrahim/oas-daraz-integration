@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React from 'react';
 import {Row, Col, Container } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -6,42 +6,26 @@ import Nav from 'react-bootstrap/Nav';
 import { FaSearch, FaBars, FaShoppingCart} from "react-icons/fa";
 import Card from '../component/SideNavpage';
 import Cart from '../component/Cart';
-import "../assets/style.css"
-import { API_URL} from "../helper/api"
 
 
-export default function Header(props) {
 
-    const [lengthh, setLengthh] = useState([]);
-
-    const getLengthh = async () => {
-        const response = await fetch (API_URL+"shop-setting/");
-        const data = await response.json();
-        setLengthh(data);
-    }
-    
-    useEffect ( () => {
-        getLengthh();
-    }, [] );
-    
-    
-        return (
-
-      
-
+function Header() {
+    return (
         <div className="header-main">
             <div className="header p-3">
                 <Container fluid>
                     {/* web menu */}
-                    <div className="row web-menu">
+                    <div className="web-menu">
+                    <Row>  
+                        
                         <Col xs="3">
-                        <img class="main-logo" src={lengthh.logo} alt="logo"/>
+                            <h2>LOGO</h2>
                         </Col>
                         <Col xs="6">
                             <div className="home-menu">
-                                <Nav className="justify-content-center" activeKey="/">
+                                <Nav className="justify-content-center" activeKey="/home">
                                     <Nav.Item>
-                                        <Nav.Link href="/"  className="pr-4">Home</Nav.Link>
+                                        <Nav.Link href="/home"  className="pr-4">Home</Nav.Link>
                                     </Nav.Item>
 
                                     <Nav.Item>
@@ -61,12 +45,21 @@ export default function Header(props) {
                         </Col>
                         <Col xs="3">
                             <div className="float-right menu-right-icons">
-                               <span className="pr-3"><FaSearch/></span> 
+                               <span className="pr-3"><FaSearch/>
+                                
+                               </span> 
                                <span className=""><Card /></span>
                                <span className="cart-main"><Cart/></span>
+                               
+                               
+                               
+                               
                             </div> 
                         </Col> 
-                        </div> 
+                        
+                        
+                    </Row>
+                    </div>
                     {/* web menu */}
 
                     {/* Mobile menu */}
@@ -125,4 +118,4 @@ export default function Header(props) {
     )
 }
 
-
+export default Header
