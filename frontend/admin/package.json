@@ -2,7 +2,7 @@
     "name": "demo3",
     "version": "7.1.9",
     "private": true,
-    "homepage": "http://stagings.tk:6000/",
+    "homepage": "http://stagings.tk:4000/",
     "scripts": {
         "start": "react-scripts start -o",
         "build": "react-scripts build",

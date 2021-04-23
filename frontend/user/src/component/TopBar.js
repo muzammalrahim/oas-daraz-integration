@@ -1,9 +1,9 @@
 import React from 'react'
 import {Row, Col, Container } from 'react-bootstrap';
-import '../assets/style.css'
+import '../assets/style.css';
 import { FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaShareAlt } from "react-icons/fa";
+
 import {Link} from 'react-router-dom'
-import "../assets/style.css"
 
 
 function TopBar() {

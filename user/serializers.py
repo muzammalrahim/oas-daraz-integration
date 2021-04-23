@@ -5,6 +5,8 @@ from utils import utils
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework.validators import UniqueValidator
+from . import helper as user_helper
+
 
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,6 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
             password = validated_data.get('password', None)
             if password is not None:
                 validated_data['password'] = make_password(password)
+                user_helper.delete_token(instance)
         return super().update(instance, validated_data)
     class Meta:
         model = models.User

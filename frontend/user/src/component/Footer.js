@@ -7,7 +7,6 @@ import Button from "react-bootstrap/Button";
 import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
 import { FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaGlobeAsia } from "react-icons/fa";
-import "../assets/style.css"
 
 
 

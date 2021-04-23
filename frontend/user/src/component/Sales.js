@@ -7,8 +7,6 @@ import Slide3 from '../images/s3.jpg'
 import Slide4 from '../images/s4.jpg'
 import Slide5 from '../images/s5.jpg'
 import ImageResponsive from 'react-image-responsive';
-import "../assets/style.css"
-
 
 function Sales() {
     return (

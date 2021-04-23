@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { FaBars} from "react-icons/fa";
-import "../assets/style.css"
 
 
 
