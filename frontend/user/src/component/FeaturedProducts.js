@@ -57,7 +57,7 @@ console.log("Length",lengthh.featured_product);
                         <div className="inner-content">
                             <div className="img-wrap">
                                 <figure class="snip0013">
-                                        <img className="responsive-image" src={"http://localhost:8000/static"+product.images[0].image} alt="image"/>
+                                        <img className="responsive-image" src={"http://127.0.0.1:8000"+product.images[0].image} alt="image"/>
                                     <div>
                                         <ul className="img-hover">
                                             <li><a href="#"><i><FaShoppingCart/></i></a></li>
