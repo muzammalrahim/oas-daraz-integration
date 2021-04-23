@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const ADMIN_ROUTE ='admin'
+export const ADMIN_ROUTE ='shopadmin'
 export const API_URL = process.env.REACT_APP_BACKEND_URL+'api/v1/';
 export const STATIC_URL = process.env.REACT_APP_BACKEND_URL+'static/media/uploads/';
 
