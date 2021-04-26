@@ -99,6 +99,7 @@ export function ShopSettings(){
         twitter_url:"",
         instagram_url:"",
         blog_url:"",
+        footer_tag_line:"",
     }
 
     const [logoFile, setLogoFile] = useState({});
@@ -372,6 +373,11 @@ export function ShopSettings(){
                             <label>Blog URL</label>
                             <input type="text" name="blog_url" value={settings.blog_url} className="form-control" 
                             placeholder="Blog URL" onChange={onChange} />
+                        </div>
+                        <div className="form-group col-lg-12">
+                            <label>Footer Tag Line</label>
+                            <input type="text" name="footer_tag_line" value={settings.footer_tag_line} className="form-control" 
+                            placeholder="Footer Tag" onChange={onChange} />
                         </div>
                     </div>
                  </form>
