@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FaShoppingCart } from "react-icons/fa";
-import "../assets/style.css"
+
 
 
 export default class Cart extends Component {

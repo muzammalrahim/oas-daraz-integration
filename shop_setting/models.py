@@ -15,6 +15,7 @@ class ShopSetting(models.Model):
     twitter_url = models.URLField(max_length=255, blank=True, null=True)
     instagram_url = models.URLField(max_length=255, blank=True, null=True)
     blog_url = models.URLField(max_length=255, blank=True, null=True)
+    footer_tag_line = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
         db_table = 'oas_shop_setting'

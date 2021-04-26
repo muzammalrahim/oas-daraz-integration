@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Row, Col, Container } from 'react-bootstrap';
 import {Link} from 'react-router-dom'
 import { FaCcVisa, FaCcPaypal,FaCcAmazonPay } from "react-icons/fa"
@@ -11,7 +11,7 @@ import "../assets/style.css"
 import { API_URL} from "../helper/api"
 
 
-export default function Header() {
+export default function Footer() {
 
     const [lengthh, setLengthh] = useState([]);
 

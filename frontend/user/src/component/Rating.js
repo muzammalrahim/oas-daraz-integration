@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 import IconButton from '@material-ui/core/IconButton'
 import orange from '@material-ui/core/colors/orange'
 import grey from '@material-ui/core/colors/grey'
 import { withStyles } from '@material-ui/core/styles'
 import Star from '@material-ui/icons/Star'
 import StarBorder from '@material-ui/icons/StarBorder'
-import classNames from 'classnames';
-import "../assets/style.css"
 
 const noPointerEvents = {
   pointerEvents: 'none'
@@ -166,7 +165,7 @@ Rating.defaultProps = {
   disableHover: false,
   iconHovered: false,
   iconFilled: <Star htmlColor={orange[500]} />,
-  iconNormal: <StarBorder htmlColor={grey[500]} />,
+  iconNormal: <StarBorder htmlColor={grey[300]} />,
   max: 5,
   readOnly: false,
   value: 0

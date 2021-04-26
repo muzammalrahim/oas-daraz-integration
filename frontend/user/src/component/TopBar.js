@@ -7,7 +7,7 @@ import "../assets/style.css"
 import { API_URL} from "../helper/api"
 
 
-export default function Header() {
+export default function TopBar() {
 
     
     const [lengthh, setLengthh] = useState([]);
