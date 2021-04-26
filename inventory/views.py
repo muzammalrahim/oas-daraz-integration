@@ -68,13 +68,13 @@ class InventoryViewSet(viewsets.ModelViewSet):
         if instance.product_title:
             titles = instance.product_title.split(' ')
         else:
-            titles = instance.part_number
+            titles = instance.part_number.split(' ')
 
         serializer = self.get_serializer(instance)
         data = serializer.data
         # TODO: change the query
         related_products = Inventory.objects.filter(
-            reduce(operator.and_,
+            reduce(operator.or_,
                    (Q(part_number__icontains=x) | Q(product_title__icontains=x) for x in titles))).exclude(
             id=instance.id)[:10]
 
