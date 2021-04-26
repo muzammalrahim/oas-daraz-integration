@@ -35,7 +35,7 @@ export default function Header(props) {
                     {/* web menu */}
                     <div className="row web-menu">
                         <Col xs="3">
-                        <img class="main-logo" src={lengthh.logo} alt="logo"/>
+                        <img class="main-logo" src={lengthh.logo} alt="Site Logo"/>
                         </Col>
                         <Col xs="6">
                             <div className="home-menu">
