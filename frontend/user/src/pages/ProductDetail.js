@@ -11,10 +11,11 @@ import GetCoupen from '../component/GetCoupen';
 import RelatedProducts from '../component/RelatedProduct';
 import ProductDetailTab from '../component/ProductDetailTab';
 import { FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaShareAlt } from "react-icons/fa";
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import Imagemain from '../images/m1.jpg'
 import Easypesa from '../images/easypesa.png';
 import Jazzcash from '../images/jazz.png';
+import {list} from '../helper/api'
 
 
 
@@ -25,11 +26,25 @@ export default class ProductDetail extends Component {
     state = {
         path: this.props.Imagemain,
         mouseOver: false,
+        product: '',
       }; 
 
     static propTypes = {
         prop: PropTypes
     }
+
+    getProductDetail = () => {
+        const { id } = useParams;
+        console.log(id)
+        const {product} = this.state
+        list('inventory/' + useParams.id,).then(response => {
+            console.log(response.data)
+        })
+    }
+    componentDidMount() {
+        this.getProductDetail()
+    }
+    
 
     render() {
         const { path, mouseOver } = this.state;
