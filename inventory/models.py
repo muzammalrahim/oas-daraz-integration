@@ -94,6 +94,7 @@ class Inventory(models.Model):
     featured_product = models.BooleanField(default=False)
     daraz_product = models.BooleanField(default=False)
     daraz_id = models.IntegerField(null=True, blank=True)
+    discounts = models.FloatField(default=0, null=True, blank=True)
 
     class Meta:
         db_table = 'oas_inventory'

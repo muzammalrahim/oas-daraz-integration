@@ -91,8 +91,7 @@ class InventorySerializer(serializers.ModelSerializer):
 
         del validated_data['old_images']
         product_image_data = validated_data.get('product_images', None)
-        if product_image_data:
-            del validated_data['product_images']
+        del validated_data['product_images']
 
         try:
             product = inventory_model.Inventory.objects.filter(part_number=part_number,condition=condition).first()

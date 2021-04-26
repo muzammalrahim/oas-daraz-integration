@@ -153,6 +153,10 @@ export function ProductView({
                                 <div>{product?.unit_price ? product.unit_price : '---'}</div>
                             </div>
                             <div className="col-md-6 col-12 mb-4">
+                                <div className="kt_detail__item_title">Discounts</div>
+                                <div>{product?.discounts ? product.discounts : '---'}</div>
+                            </div>
+                            <div className="col-md-6 col-12 mb-4">
                                 <div className="kt_detail__item_title">Unit of measure</div>
                                 <div>{product?.unit_of_measure ? product.unit_of_measure : '---'}</div>
                             </div>

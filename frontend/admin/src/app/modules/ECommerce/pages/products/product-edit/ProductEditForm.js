@@ -317,6 +317,14 @@ export function ProductEditForm({
                   />
                 </div>
                 <div className="form-group col-lg-4">
+                  <Field
+                    name="discounts"
+                    component={Input}
+                    placeholder=""
+                    label="Discounts"
+                  />
+                </div>
+                <div className="form-group col-lg-4">
                   <label>Category</label>
                   <CreatableAsyncPaginate
                     name="product_category"
@@ -330,15 +338,15 @@ export function ProductEditForm({
                     loadOptions={(search, prevOptions) => loadOptions(search, prevOptions, categories, modelsLoaded)}
                   />
                 </div>
-                <div className="form-group col-lg-4">
+              </div>
+              <div className="row">
+              <div className="form-group col-lg-4">
                   <Field
                     name="tag_date"
                     component={Input}
                     label="Tag Date"
                   />
                 </div>
-              </div>
-              <div className="row">
                 <div className="form-group col-lg-4">
                   <MSelect name="hazmat" label="Hazmat">
                     {YES_NO_OPTIONS.map((status, index) => (
@@ -356,7 +364,9 @@ export function ProductEditForm({
                     label="Certification"
                   />
                 </div>
-                <div className="form-group col-lg-4">
+              </div>
+              <div className="row">
+              <div className="form-group col-lg-4">
                   <MSelect name="unit_of_measure" label="Unit of measure">
                     <option value="">--None--</option>
                     {UOM_CHOICES.map((status, index) => (
@@ -366,8 +376,6 @@ export function ProductEditForm({
                     ))}
                   </MSelect>
                 </div>
-              </div>
-              <div className="row">
                 {values.hazmat === 'Yes' && <div className="form-group col-lg-4">
                   <Field
                     name="un_code"
@@ -439,7 +447,6 @@ export function ProductEditForm({
                     ))}
                   </MSelect>
                 </div>
-                <div className="form-group col-lg-4"></div>
                 {/* checkbox for Best seller */}
                 <div className="form-group col-lg-4">
                   <label>Best Seller</label>

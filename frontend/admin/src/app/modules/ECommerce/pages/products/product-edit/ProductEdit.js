@@ -107,6 +107,7 @@ const initProduct = {
   status: 1,
   hazmat: "No",
   unit_price: 0,
+  discounts:0,
   unit_of_measure: "",
   quantity: 1,
   turn_around_time: "",
