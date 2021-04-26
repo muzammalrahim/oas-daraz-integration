@@ -163,7 +163,7 @@ Rating.defaultProps = {
   component: 'div',
   disabled: false,
   disableHover: false,
-  iconHovered: <StarBorder htmlColor={orange[500]} />,
+  iconHovered: false,
   iconFilled: <Star htmlColor={orange[500]} />,
   iconNormal: <StarBorder htmlColor={grey[300]} />,
   max: 5,
