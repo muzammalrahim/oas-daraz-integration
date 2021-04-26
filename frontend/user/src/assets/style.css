@@ -1081,3 +1081,8 @@ h3.price-detail {
 .none{
     display: none;
 }
+
+.main-logo{
+    width: 90px;
+    height: 65px;
+}
