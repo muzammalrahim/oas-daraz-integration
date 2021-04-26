@@ -877,3 +877,8 @@ figure.snip0013 > div a i:hover{
 .none{
     display: none;
 }
+
+.main-logo{
+    width: 90px;
+    height: 65px;
+}

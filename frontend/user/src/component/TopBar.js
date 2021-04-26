@@ -43,11 +43,10 @@ export default function Header() {
                             </Col>
                             <Col xs="6" sm="4" md="6">
                                 <ul className="float-right m-0">
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaFacebookF/></li></a> : <li className="none"></li> }
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaTwitter/></li></a> : <li className="none"></li> }
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaInstagram/></li></a> : <li className="none"></li> }
-                                {lengthh.facebook_url ? <a href="https://www.facebook.com/Creative-Tech-Solutions-259468763426/"><li className="pr-2"><FaBlog/></li></a> : <li className="none"></li> }
-                                
+                                {lengthh.facebook_url ? <a href={lengthh.facebook_url}><li className="pr-2"><FaFacebookF/></li></a> : <li className="none"></li> }
+                                {lengthh.twitter_url ? <a href={lengthh.twitter_url}><li className="pr-2"><FaTwitter/></li></a> : <li className="none"></li> }
+                                {lengthh.instagram_url ? <a href={lengthh.instagram_url}><li className="pr-2"><FaInstagram/></li></a> : <li className="none"></li> }
+                                {lengthh.blog_url ? <a href={lengthh.blog_url}><li className="pr-2"><FaBlog/></li></a> : <li className="none"></li> }
                                 </ul>
                             </Col>
                     </Row>
