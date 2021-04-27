@@ -30,6 +30,11 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
+environment = env("DJANGO_ENV")
+
+print("DEBUG ", DEBUG)
+print("ENVIRONMENT ", environment)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -64,6 +69,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if environment == 'production':
+    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
 
 CONSTANCE_CONFIG = {
     'Paypal_Mode': (0, '0 for sandbox, 1 for production'),
@@ -183,7 +192,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'frontend/admin/build/static'),

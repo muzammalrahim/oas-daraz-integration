@@ -1,6 +1,7 @@
-from django.urls import re_path
+from django.urls import re_path, path
 from . import views
 
 urlpatterns = [
-    re_path(r'^oxyadmin', views.admin_panel),
+    path("", views.user_panel),
+    re_path(r'^shopadmin', views.admin_panel),
 ]
