@@ -5,7 +5,7 @@ import { CloudUpload as CloudUploadIcon } from "@material-ui/icons";
 import { Button as ButtonCore,  } from "@material-ui/core";
 import { FormHelperText, Switch } from "@material-ui/core";
 import { post, list, put, destory } from "../../../app/pages/helper/api";
-import { STATIC_URL } from './../../../app/pages/helper/api';
+import { STATIC_URL, API_URL } from './../../../app/pages/helper/api';
 import { Snackbar, SnackbarContent, IconButton } from "@material-ui/core"
 import {
     Delete as DeleteIcon, Close as CloseIcon, CheckCircle as CheckCircleIcon, Error as ErrorIcon, Info as InfoIcon,
@@ -159,7 +159,7 @@ export function Sliders(){
      
       // load options using API call
       const loadOptions = (inputValue) => {
-        return fetch(`http://127.0.0.1:8000/api/v1/products/?search=${inputValue}`).then(res => res.json());
+        return fetch(`${API_URL}products/?search=${inputValue}`).then(res => res.json());
       };
 
     const logFileChangedHandler = (event, index) => {

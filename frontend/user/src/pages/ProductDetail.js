@@ -34,10 +34,10 @@ export default class ProductDetail extends Component {
     }
 
     getProductDetail = () => {
-        const { id } = useParams;
+        const id = this.props.match.params?.id;
         console.log(id)
-        const {product} = this.state
-        list('inventory/' + useParams.id,).then(response => {
+        // const {product} = this.state
+        list('inventory/' + id).then(response => {
             console.log(response.data)
         })
     }

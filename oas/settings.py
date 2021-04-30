@@ -32,8 +32,8 @@ ALLOWED_HOSTS = ['*']
 
 environment = env("DJANGO_ENV")
 
-print("DEBUG ", DEBUG)
-print("ENVIRONMENT ", environment)
+# print("DEBUG ", DEBUG)
+# print("ENVIRONMENT ", environment)
 
 # Application definition
 
@@ -69,7 +69,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+#
 if environment == 'production':
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
@@ -209,7 +209,7 @@ AUTH_USER_MODEL = 'user.User'
 
 AUTHENTICATION_BACKENDS = ('utils.backends.EmailBackend',)
 
-MEDIA_URL = '/static/media/uploads/'
+MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/media/uploads') #os operating system
 
