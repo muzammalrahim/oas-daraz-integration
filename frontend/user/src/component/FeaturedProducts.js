@@ -6,9 +6,10 @@ import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { AiOutlineRetweet } from "react-icons/ai";
 import ImageResponsive from "react-image-responsive";
 import "../assets/style.css";
-import { API_URL } from "../helper/api";
+import { API_URL, STATIC_URL } from "../helper/api";
 import { Link } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
+import {MAIN_ROUTE} from "../helper/api";
 
 export default function FeaturedProducts(props) {
   const [products, setProducts] = useState([]);
@@ -35,6 +36,15 @@ export default function FeaturedProducts(props) {
         window.location.assign("/ProductDetail/"+ id);
     }
 
+  const getImagePath = (image) => {
+    if(image){
+      let filename_pieces = image.split('/');
+      let img_name = filename_pieces[filename_pieces.length - 1];
+      return STATIC_URL + img_name;
+    }
+    return null;
+  }
+
   return (
     <div className="featured-main">
       <Container>
@@ -53,15 +63,14 @@ export default function FeaturedProducts(props) {
                     <div>
                       <div className="inner-content">
                         <div className="img-wrap">
-                          <Nav.Link href={`/ProductDetail/${product.id}`}>
+                          <Nav.Link href={`/${MAIN_ROUTE}/ProductDetail/${product.id}`}>
                             <figure class="snip0013">
                               <img
                                 className="responsive-image"
                                 src={
-                                  "http://localhost:8000/static" +
-                                  product.images[0].image
+                                  getImagePath(product.images[0]?.image)
                                 }
-                                alt="image"
+                                alt="No image is found."
                               />
 
                               <div>

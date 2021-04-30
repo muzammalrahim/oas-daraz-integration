@@ -168,6 +168,10 @@ class SettingViewSet(viewsets.ViewSet):
         return self.setting(request, allow_settings)
 
 
+def user_panel(request):
+    return render(request, 'user/build/index.html')
+
+
 def admin_panel(request):
     return render(request, 'admin/build/index.html')
 

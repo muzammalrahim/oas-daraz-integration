@@ -627,6 +627,7 @@ export function Builder() {
                           <div className="col-lg-9 col-xl-4">
                             <button
                                 type="button"
+                                disabled={isLoading}
                                 onClick={handleSyncDaraz}
                                 className={`btn btn-info font-weight-bold mr-2`}
                               >

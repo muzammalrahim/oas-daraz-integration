@@ -7,7 +7,7 @@ import { FaSearch, FaBars, FaShoppingCart} from "react-icons/fa";
 import Card from '../component/SideNavpage';
 import Cart from '../component/Cart';
 import "../assets/style.css"
-import { API_URL} from "../helper/api"
+import { API_URL, STATIC_URL, MAIN_ROUTE} from "../helper/api"
 
 
 export default function Header(props) {
@@ -17,6 +17,11 @@ export default function Header(props) {
     const getLengthh = async () => {
         const response = await fetch (API_URL+"shop-setting/");
         const data = await response.json();
+        if(data.logo){
+            let filename_pieces = data.logo.split('/');
+            let img_name = filename_pieces[filename_pieces.length - 1];
+            data['logo'] = STATIC_URL+"logo/" + img_name;
+        }
         setLengthh(data);
     }
     
@@ -41,7 +46,7 @@ export default function Header(props) {
                             <div className="home-menu">
                                 <Nav className="justify-content-center" activeKey="/">
                                     <Nav.Item>
-                                        <Nav.Link href="/"  className="pr-4">Home</Nav.Link>
+                                        <Nav.Link href={"/" + MAIN_ROUTE}  className="pr-4">Home</Nav.Link>
                                     </Nav.Item>
 
                                     <Nav.Item>
