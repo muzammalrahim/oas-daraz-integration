@@ -43,6 +43,8 @@ urlpatterns += [
     path('daraz/', include('darazapi.urls')),
     path('shop-setting/', include('shop_setting.urls')),
     path('products/', inventory_views.get_products, name="get_products"),
+    path('featured-products/', inventory_views.FeaturedProductsView.as_view(), name="get_featured_products"),
+    path('bestSeller-products/', inventory_views.BestSellerProductsView.as_view(), name="get_best_seller_products"),
     path("sliders/", slider_view.GetSlidersView.as_view(), name="sliders_view"),
     path("sliders/create/", slider_view.CreateSlidersView.as_view(), name="create_slider_view"),
     path("sliders/<int:pk>/", slider_view.UpdateSlidersView.as_view(), name="update_slider_view"),

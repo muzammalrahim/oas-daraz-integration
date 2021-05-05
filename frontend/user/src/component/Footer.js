@@ -39,40 +39,40 @@ export default function Footer() {
                     <Col xs="6" sm="3">
                         <ul>
                             <h4>My account</h4>
-                            <li><Link>Sign In</Link></li>
-                            <li><Link>Track My Order</Link></li>
-                            <li><Link>View Cart</Link></li>
-                            <li><Link>My Wishlist</Link></li>
-                            <li><Link>Check out</Link></li>
-                            <li><Link>CTrack My Order</Link></li>
+                            <li><Link to="/#">Sign In</Link></li>
+                            <li><Link to="/#">Track My Order</Link></li>
+                            <li><Link to="/#">View Cart</Link></li>
+                            <li><Link to="/#">My Wishlist</Link></li>
+                            <li><Link to="/#">Check out</Link></li>
+                            <li><Link to="/#">CTrack My Order</Link></li>
                         </ul>
                     </Col>
                     <Col xs="6" sm="3">
                         <ul>
                             <h4>Help</h4>
-                            <li><Link>FAQ</Link></li>
-                            <li><Link>Shipping</Link></li>
-                            <li><Link>Contact Us</Link></li>
-                            <li><Link>Privacy Policy</Link></li>
-                            <li><Link>Check out</Link></li>
-                            <li><Link>Track My Order</Link></li>
+                            <li><Link to="/#">FAQ</Link></li>
+                            <li><Link to="/#">Shipping</Link></li>
+                            <li><Link to="/#">Contact Us</Link></li>
+                            <li><Link to="/#">Privacy Policy</Link></li>
+                            <li><Link to="/#">Check out</Link></li>
+                            <li><Link to="/#">Track My Order</Link></li>
                         </ul>
                     </Col>
                     <Col xs="6" sm="3">
                         <ul>
                             <h4>Information</h4>
-                            <li><Link>Delivery Information</Link></li>
-                            <li><Link>Discount</Link></li>
-                            <li><Link>My Account</Link></li>
-                            <li><Link>About Us</Link></li>
+                            <li><Link to="/#">Delivery Information</Link></li>
+                            <li><Link to="/#">Discount</Link></li>
+                            <li><Link to="/#">My Account</Link></li>
+                            <li><Link to="/#">About Us</Link></li>
                         </ul>
                     </Col>
                     <Col xs="6" sm="3">
                         <ul>
                             <h4>Contact Info</h4>
-                            <li><Link><FaGlobeAsia/><span className="pl-2">{lengthh.address}</span></Link></li>
-                            <li><Link><FaPhoneAlt/><span className="pl-2">{lengthh.phone_number}</span></Link></li>
-                            <li><Link> <FaEnvelope/><span className="pl-2">{lengthh.email}</span></Link></li>
+                            <li><Link to="/#"><FaGlobeAsia/><span className="pl-2">{lengthh.address}</span></Link></li>
+                            <li><Link to="/#"><FaPhoneAlt/><span className="pl-2">{lengthh.phone_number}</span></Link></li>
+                            <li><Link to="/#"> <FaEnvelope/><span className="pl-2">{lengthh.email}</span></Link></li>
                         </ul>
                         <ul className="m-0 footer-social-links">
                                 {lengthh.facebook_url ? <a href={lengthh.facebook_url}><li className="pr-2"><FaFacebookF/></li></a> : <li className="none"></li> }
@@ -100,12 +100,12 @@ export default function Footer() {
                     <Accordion.Collapse eventKey="0">
                         <Card.Body>
                             <ul className="pl-0">  
-                                    <li><Link>Sign In</Link></li>
-                                    <li><Link>Track My Order</Link></li>
-                                    <li><Link>View Cart</Link></li>
-                                    <li><Link>My Wishlist</Link></li>
-                                    <li><Link>Check out</Link></li>
-                                    <li><Link>Track My Order</Link></li>
+                                    <li><Link to="/#">Sign In</Link></li>
+                                    <li><Link to="/#">Track My Order</Link></li>
+                                    <li><Link to="/#">View Cart</Link></li>
+                                    <li><Link to="/#">My Wishlist</Link></li>
+                                    <li><Link to="/#">Check out</Link></li>
+                                    <li><Link to="/#">Track My Order</Link></li>
                                 </ul>
                         </Card.Body>
                     </Accordion.Collapse>
@@ -117,12 +117,12 @@ export default function Footer() {
                         <Accordion.Collapse eventKey="1">
                         <Card.Body>
                         <ul className="pl-0">
-                            <li><Link>FAQ</Link></li>
-                            <li><Link>Shipping</Link></li>
-                            <li><Link>Contact Us</Link></li>
-                            <li><Link>Privacy Policy</Link></li>
-                            <li><Link>Check out</Link></li>
-                            <li><Link>Track My Order</Link></li>
+                            <li><Link to="/#">FAQ</Link></li>
+                            <li><Link to="/#">Shipping</Link></li>
+                            <li><Link to="/#">Contact Us</Link></li>
+                            <li><Link to="/#">Privacy Policy</Link></li>
+                            <li><Link to="/#">Check out</Link></li>
+                            <li><Link to="/#">Track My Order</Link></li>
                         </ul></Card.Body>
                         </Accordion.Collapse>
                     </Card>
@@ -134,10 +134,10 @@ export default function Footer() {
                         <Accordion.Collapse eventKey="2">
                         <Card.Body>
                         <ul className="pl-0"> 
-                            <li><Link>Delivery Information</Link></li>
-                            <li><Link>Discount</Link></li>
-                            <li><Link>My Account</Link></li>
-                            <li><Link>About Us</Link></li>
+                            <li><Link to="/#">Delivery Information</Link></li>
+                            <li><Link to="/#">Discount</Link></li>
+                            <li><Link to="/#">My Account</Link></li>
+                            <li><Link to="/#">About Us</Link></li>
                         </ul>
                         </Card.Body>
                         </Accordion.Collapse>
@@ -151,9 +151,9 @@ export default function Footer() {
                         <Card.Body>
                         <ul className="pl-0">
                             
-                            <li><Link><FaGlobeAsia/><span className="pl-2">{lengthh.address}</span></Link></li>
-                            <li><Link><FaPhoneAlt/><span className="pl-2">{lengthh.phone_number}</span></Link></li>
-                            <li><Link> <FaEnvelope/><span className="pl-2">{lengthh.email}</span></Link></li>
+                            <li><Link to="/#"><FaGlobeAsia/><span className="pl-2">{lengthh.address}</span></Link></li>
+                            <li><Link to="/#"><FaPhoneAlt/><span className="pl-2">{lengthh.phone_number}</span></Link></li>
+                            <li><Link to="/#"> <FaEnvelope/><span className="pl-2">{lengthh.email}</span></Link></li>
                         </ul>
                         <ul className="m-0 footer-social-links pl-0">
                             {lengthh.facebook_url ? <a href={lengthh.facebook_url}><li className="pr-2"><FaFacebookF/></li></a> : <li className="none"></li> }

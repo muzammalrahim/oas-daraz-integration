@@ -12,29 +12,22 @@ import Nav from "react-bootstrap/Nav";
 import {MAIN_ROUTE} from "../helper/api";
 
 export default function FeaturedProducts(props) {
-  const [products, setProducts] = useState([]);
-  const [lengthh, setLengthh] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
 
-  const getProducts = async () => {
-    const response = await fetch(API_URL + "inventory/");
+  const getFeaturedProducts = async () => {
+    const response = await fetch(API_URL + "featured-products/");
     const data = await response.json();
-    setProducts(data.results);
-  };
-
-  const getLengthh = async () => {
-    const response = await fetch(API_URL + "shop-setting/");
-    const data = await response.json();
-    setLengthh(data);
+    setFeaturedProducts(data.results);
   };
 
   useEffect(() => {
-    getProducts();
-    getLengthh();
+    getFeaturedProducts();
   }, []);
-    const handleDetail = (id) => {
-       console.log(id)
-        window.location.assign("/ProductDetail/"+ id);
-    }
+
+  const handleDetail = (id) => {
+    console.log(id)
+    window.location.assign("/ProductDetail/"+ id);
+  }
 
   const getImagePath = (image) => {
     if(image){
@@ -55,16 +48,12 @@ export default function FeaturedProducts(props) {
           </div>
         </Row>
         <Row className="products-grid pt-4 pb-4">
-          {products.map((product, index) => (
-            <div>
-              {lengthh.featured_product > index && (
-                <Col>
-                  {product.featured_product === true && (
-                    <div>
+          {featuredProducts.map((product, index) => (
+                <Col key={index}>
                       <div className="inner-content">
                         <div className="img-wrap">
                           <Nav.Link href={`/${MAIN_ROUTE}/ProductDetail/${product.id}`}>
-                            <figure class="snip0013">
+                            <figure className="snip0013">
                               <img
                                 className="responsive-image"
                                 src={
@@ -108,15 +97,11 @@ export default function FeaturedProducts(props) {
                         <Rating
                           value={product.product_rating}
                           max={5}
-                          editing={false}
-                          onStarHover={false}
+                          editing="false"
+                          // onStarHover="false"
                         />
                       </div>
-                    </div>
-                  )}
                 </Col>
-              )}{" "}
-            </div>
           ))}
         </Row>
       </Container>

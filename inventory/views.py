@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from inventory import models as inventory_model
 from inventory.models import Inventory, ProductCategory, Manufacturer, ProductRating
 from inventory.serializers import ProductRatingsSerializer
+from shop_setting.models import ShopSetting
 from user.models import Supplier
 from inventory import serializers as inventory_serializer
 from oas.pagination import CustomPagination
@@ -268,6 +269,25 @@ def get_products(request, *args, **kwargs):
         return Response(queryset, status=HTTP_200_OK)
     else:
         return Response([])
+
+
+class FeaturedProductsView(generics.ListAPIView):
+    queryset = inventory_model.Inventory.objects.all().order_by('-created_at')
+    serializer_class = inventory_serializer.InventorySerializer
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        setting = ShopSetting.objects.all().first()
+        limit = setting.featured_product
+        if not limit:
+            limit = 8
+        return self.queryset.filter(featured_product=True)[:limit]
+
+
+class BestSellerProductsView(generics.ListAPIView):
+    queryset = inventory_model.Inventory.objects.filter(best_seller=True).order_by('-created_at')
+    serializer_class = inventory_serializer.InventorySerializer
+    pagination_class = CustomPagination
 
 
 # Deprecated
