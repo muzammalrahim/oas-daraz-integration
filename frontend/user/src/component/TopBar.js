@@ -34,10 +34,10 @@ export default function TopBar() {
                             <Col xs="6">
                             <ul className="pl-0 m-0">
                                 <li className="pr-4">
-                                <p className="m-0"><FaPhoneAlt/> <span className="pl-1"><Link href="tel:+92 7654321">{lengthh.phone_number}</Link></span></p>
+                                <p className="m-0"><FaPhoneAlt/> <span className="pl-1"><a href="tel:+92 7654321">{lengthh.phone_number}</a></span></p>
                                 </li>
                                 <li>
-                                    <p className="m-0"><FaEnvelope/><span className="pl-3"><Link href="mailto:info@company.com">{lengthh.email}</Link></span></p>
+                                    <p className="m-0"><FaEnvelope/><span className="pl-3"><a href="mailto:info@company.com">{lengthh.email}</a></span></p>
                                 </li>
                             </ul>
                             </Col>

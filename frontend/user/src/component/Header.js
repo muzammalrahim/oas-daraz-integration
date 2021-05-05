@@ -40,7 +40,7 @@ export default function Header(props) {
                     {/* web menu */}
                     <div className="row web-menu">
                         <Col xs="3">
-                        <img class="main-logo" src={lengthh.logo} alt="Site Logo"/>
+                        <img className="main-logo" src={lengthh.logo} alt="Site Logo"/>
                         </Col>
                         <Col xs="6">
                             <div className="home-menu">
@@ -82,7 +82,7 @@ export default function Header(props) {
                             
                             <Col xs lg="4" xs="4">
                                 <div className="home-menu">
-                                <Navbar  expand="lg" w-100>
+                                <Navbar  expand="lg" w-100="true">
 
                                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                                     <Navbar.Collapse id="basic-navbar-nav">

@@ -5,21 +5,30 @@ import Slider from "react-slick";
 import "react-multi-carousel/lib/styles.css";
 import Rating from "../component/Rating";
 import "../assets/style.css";
-import { API_URL } from "../helper/api";
+import { API_URL, STATIC_URL } from "../helper/api";
 
 export default function BestSeller() {
-  const [products, setProducts] = useState([]);
+  const [bestSellerProducts, setBestSellerProducts] = useState([]);
 
-  const getProducts = async () => {
-    const response = await fetch(API_URL + "inventory/");
+  const getBestSellerProducts = async () => {
+    const response = await fetch(API_URL + "bestSeller-products/");
     const data = await response.json();
-    setProducts(data.results);
+    setBestSellerProducts(data.results);
   };
+
+  const getImagePath = (image) => {
+    if(image){
+      let filename_pieces = image.split('/');
+      let img_name = filename_pieces[filename_pieces.length - 1];
+      return STATIC_URL + img_name;
+    }
+    return null;
+  }
 
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
@@ -28,7 +37,7 @@ export default function BestSeller() {
   };
 
   useEffect(() => {
-    getProducts();
+    getBestSellerProducts();
   }, []);
 
   return (
@@ -48,31 +57,30 @@ export default function BestSeller() {
       <Container>
         <div className="seller-inner-slider pb-4">
           <Slider {...settings}>
-            {products.map((product) => (
-              <div>
-                {product.best_seller === true && (
-                  <div className="responsivee-image">
-                    <img
-                      src={
-                        "http://localhost:8000/static" + product.images[0].image
-                      }
-                      alt="slide1"
-                    />
-                    <div className="text pt-3">
-                      <h5>{product.product_title}</h5>
-                      <p className="mb-1">{product.unit_price}</p>
-                    </div>
-                    <Rating
-                      value={product.product_rating}
-                      max={5}
-                      editing={false}
-                      onStarHover={false}
-                      onChange={(i) => console.log("onChange " + i)}
-                    />
+          
+             {bestSellerProducts.map((product) => (
+                <div key={product.id}>
+                        <div className="responsivee-image">
+                          <img
+                            src={
+                                getImagePath(product.images[0]?.image)
+                            }
+                            alt="No image is found."
+                          />
+                        </div>
+                          <div className="text pt-3">
+                            <h5>{product.product_title}</h5>
+                            <p className="mb-1">{product.unit_price}</p>
+                          </div>
+                          <Rating
+                            value={product.product_rating}
+                            max={5}
+                            editing="false"
+                            // onStarHover={false}
+                            onChange={(i) => console.log("onChange " + i)}
+                          />
                   </div>
-                )}
-              </div>
-            ))}
+            ))} 
           </Slider>
         </div>
       </Container>

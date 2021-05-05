@@ -38,11 +38,11 @@ export function AuthPage() {
             {/*begin: Aside Container*/}
             <div className="d-flex flex-row-fluid flex-column justify-content-between">
               {/* start:: Aside header */}
-              <Link to="/" className="flex-column-auto mt-5 pb-lg-0 pb-10">
+              <Link to="/" className="flex-column-auto mt-5 pb-lg-0 pb-10 align-self-center">
                 <img
                   alt="Logo"
                   className="max-h-70px"
-                  src={toAbsoluteUrl("/static/media/logos/Oxygen_Aerospace_logo_icon_svg.svg")}
+                  src={toAbsoluteUrl("/static/media/logos/cart.svg")}
                 />
               </Link>
               {/* end:: Aside header */}
@@ -50,10 +50,10 @@ export function AuthPage() {
               {/* start:: Aside content */}
               <div className="flex-column-fluid d-flex flex-column justify-content-center">
                 <h3 className="font-size-h1 mb-5 text-white">
-                  Welcome to Oxygen Aerospace
+                  Welcome to Shopping Cart
                 </h3>
                 <p className="font-weight-lighter text-white opacity-80">
-                  Best Aircraft Parts sale Company.
+                  Quality products sale Company.
                 </p>
               </div>
               {/* end:: Aside content */}
@@ -61,7 +61,7 @@ export function AuthPage() {
               {/* start:: Aside footer for desktop */}
               <div className="d-none flex-column-auto d-lg-flex justify-content-between mt-10">
                 <div className="opacity-70 font-weight-bold	text-white">
-                  &copy; 2021 OxygenAerospce
+                  &copy; 2021 ShoppingCart
                 </div>
                 <div className="d-flex">
                   <Link to="/terms" className="text-white">
@@ -85,7 +85,7 @@ export function AuthPage() {
           <div className="d-flex flex-column flex-row-fluid position-relative p-7 overflow-hidden">
             {/*begin::Content header*/}
             <div className="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
-            {is_registration() ? <>
+            {/* {is_registration() ? <>
                 <span className="font-weight-bold text-dark-50">
                   Already have an account?
                 </span>
@@ -108,7 +108,7 @@ export function AuthPage() {
                   Sign Up!
                 </Link>
               </>
-              }
+              } */}
             </div>
             {/*end::Content header*/}
 
@@ -116,10 +116,10 @@ export function AuthPage() {
             <div className="d-flex flex-column-fluid flex-center mt-30 mt-lg-0">
               <Switch>
                 <ContentRoute path={"/"+ADMIN_ROUTE+"/auth/login"} component={Login} />
-                <ContentRoute
+                {/* <ContentRoute
                   path={"/"+ADMIN_ROUTE+"/auth/registration"}
                   component={Registration}
-                />
+                /> */}
                 <ContentRoute
                   path={"/"+ADMIN_ROUTE+"/auth/forgot-password"}
                   component={ForgotPassword}
