@@ -14,20 +14,12 @@ export default class Home extends Component {
     render() {
         return (
             <div className="home-main">
-                <div className="topbar">
-                <TopBar/>
-                </div>
-                <div>
-                    <Header/>
-                </div>
                 <div>
                     <Slider/>
                 </div>
                 <div className="mt-5">
                     <BestSeller/>
                 </div> 
-
-                
                 <div>
                     <Services/>
                 </div>
@@ -41,9 +33,7 @@ export default class Home extends Component {
                 <div>
                     <GetCoupen/>
                 </div>
-                <Footer/> 
             </div>
-            
         )
     }
 }

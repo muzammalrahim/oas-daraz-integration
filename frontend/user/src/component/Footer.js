@@ -8,28 +8,12 @@ import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
 import { FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram, FaBlog, FaGlobeAsia } from "react-icons/fa";
 import "../assets/style.css"
-import { API_URL} from "../helper/api"
 
-
-export default function Footer() {
-
-    const [lengthh, setLengthh] = useState([]);
-
-    const getLengthh = async () => {
-        const response = await fetch (API_URL+"shop-setting/");
-        const data = await response.json();
-        setLengthh(data);
-    }
-    
-    useEffect ( () => {
-        getLengthh();
-    }, [] );
-    
+export default function Footer(props) {
+    const {setting} = props;
 
     return (
         <div className="footer-main pt-3">
-
-
             {/* web links */}
             <div className="web-f-link">
             <div className="footer-links pt-3">
@@ -70,15 +54,15 @@ export default function Footer() {
                     <Col xs="6" sm="3">
                         <ul>
                             <h4>Contact Info</h4>
-                            <li><Link to="/#"><FaGlobeAsia/><span className="pl-2">{lengthh.address}</span></Link></li>
-                            <li><Link to="/#"><FaPhoneAlt/><span className="pl-2">{lengthh.phone_number}</span></Link></li>
-                            <li><Link to="/#"> <FaEnvelope/><span className="pl-2">{lengthh.email}</span></Link></li>
+                            <li><Link to="/#"><FaGlobeAsia/><span className="pl-2">{setting.address}</span></Link></li>
+                            <li><Link to="/#"><FaPhoneAlt/><span className="pl-2">{setting.phone_number}</span></Link></li>
+                            <li><Link to="/#"> <FaEnvelope/><span className="pl-2">{setting.email}</span></Link></li>
                         </ul>
                         <ul className="m-0 footer-social-links">
-                                {lengthh.facebook_url ? <a href={lengthh.facebook_url}><li className="pr-2"><FaFacebookF/></li></a> : <li className="none"></li> }
-                                {lengthh.twitter_url ? <a href={lengthh.twitter_url}><li className="pr-2"><FaTwitter/></li></a> : <li className="none"></li> }
-                                {lengthh.instagram_url ? <a href={lengthh.instagram_url}><li className="pr-2"><FaInstagram/></li></a> : <li className="none"></li> }
-                                {lengthh.blog_url ? <a href={lengthh.blog_url}><li className="pr-2"><FaBlog/></li></a> : <li className="none"></li> }
+                                {setting.facebook_url ? <a href={setting.facebook_url}><li className="pr-2"><FaFacebookF/></li></a> : <li className="none"></li> }
+                                {setting.twitter_url ? <a href={setting.twitter_url}><li className="pr-2"><FaTwitter/></li></a> : <li className="none"></li> }
+                                {setting.instagram_url ? <a href={setting.instagram_url}><li className="pr-2"><FaInstagram/></li></a> : <li className="none"></li> }
+                                {setting.blog_url ? <a href={setting.blog_url}><li className="pr-2"><FaBlog/></li></a> : <li className="none"></li> }
                         </ul>
                     </Col>
                 </Row>
@@ -151,15 +135,15 @@ export default function Footer() {
                         <Card.Body>
                         <ul className="pl-0">
                             
-                            <li><Link to="/#"><FaGlobeAsia/><span className="pl-2">{lengthh.address}</span></Link></li>
-                            <li><Link to="/#"><FaPhoneAlt/><span className="pl-2">{lengthh.phone_number}</span></Link></li>
-                            <li><Link to="/#"> <FaEnvelope/><span className="pl-2">{lengthh.email}</span></Link></li>
+                            <li><Link to="/#"><FaGlobeAsia/><span className="pl-2">{setting.address}</span></Link></li>
+                            <li><Link to="/#"><FaPhoneAlt/><span className="pl-2">{setting.phone_number}</span></Link></li>
+                            <li><Link to="/#"> <FaEnvelope/><span className="pl-2">{setting.email}</span></Link></li>
                         </ul>
                         <ul className="m-0 footer-social-links pl-0">
-                            {lengthh.facebook_url ? <a href={lengthh.facebook_url}><li className="pr-2"><FaFacebookF/></li></a> : <li className="none"></li> }
-                            {lengthh.twitter_url ? <a href={lengthh.twitter_url}><li className="pr-2"><FaTwitter/></li></a> : <li className="none"></li> }
-                            {lengthh.instagram_url ? <a href={lengthh.instagram_url}><li className="pr-2"><FaInstagram/></li></a> : <li className="none"></li> }
-                            {lengthh.blog_url ? <a href={lengthh.blog_url}><li className="pr-2"><FaBlog/></li></a> : <li className="none"></li> }
+                            {setting.facebook_url ? <a href={setting.facebook_url}><li className="pr-2"><FaFacebookF/></li></a> : <li className="none"></li> }
+                            {setting.twitter_url ? <a href={setting.twitter_url}><li className="pr-2"><FaTwitter/></li></a> : <li className="none"></li> }
+                            {setting.instagram_url ? <a href={setting.instagram_url}><li className="pr-2"><FaInstagram/></li></a> : <li className="none"></li> }
+                            {setting.blog_url ? <a href={setting.blog_url}><li className="pr-2"><FaBlog/></li></a> : <li className="none"></li> }
                         </ul>
                         </Card.Body>
                         </Accordion.Collapse>

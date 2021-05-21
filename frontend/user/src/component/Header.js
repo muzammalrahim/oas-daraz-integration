@@ -3,64 +3,55 @@ import {Row, Col, Container } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
+import { NavLink } from 'react-router-dom';
 import { FaSearch, FaBars, FaShoppingCart} from "react-icons/fa";
 import Card from '../component/SideNavpage';
 import Cart from '../component/Cart';
 import "../assets/style.css"
-import { API_URL, STATIC_URL, MAIN_ROUTE} from "../helper/api"
+import { STATIC_URL, MAIN_ROUTE} from "../helper/api"
 
 
 export default function Header(props) {
-
-    const [lengthh, setLengthh] = useState([]);
-
-    const getLengthh = async () => {
-        const response = await fetch (API_URL+"shop-setting/");
-        const data = await response.json();
-        if(data.logo){
-            let filename_pieces = data.logo.split('/');
-            let img_name = filename_pieces[filename_pieces.length - 1];
-            data['logo'] = STATIC_URL+"logo/" + img_name;
-        }
-        setLengthh(data);
-    }
+    const {setting} = props;
+    const [logo, setLogo] = useState("");
     
     useEffect ( () => {
-        getLengthh();
-    }, [] );
+        if(setting.logo){
+            let filename_pieces = setting.logo.split('/');
+            let img_name = filename_pieces[filename_pieces.length - 1];
+            let path = STATIC_URL+"logo/" + img_name;
+            setLogo(path)
+        }
+    }, [setting]);
     
     
         return (
-
-      
-
         <div className="header-main">
             <div className="header p-3">
                 <Container fluid>
                     {/* web menu */}
                     <div className="row web-menu">
                         <Col xs="3">
-                        <img className="main-logo" src={lengthh.logo} alt="Site Logo"/>
+                        <img className="main-logo" src={logo} alt="Site Logo"/>
                         </Col>
                         <Col xs="6">
                             <div className="home-menu">
                                 <Nav className="justify-content-center" activeKey="/">
                                     <Nav.Item>
-                                        <Nav.Link href={"/" + MAIN_ROUTE}  className="pr-4">Home</Nav.Link>
+                                        <NavLink to={"/" + MAIN_ROUTE}  className="nav-link pr-4">Home</NavLink>
                                     </Nav.Item>
 
                                     <Nav.Item>
-                                        <Nav.Link eventKey="link-1"  className="pr-4">Accessories</Nav.Link>
+                                        <NavLink to="#" className="nav-link pr-4">Accessories</NavLink>
                                     </Nav.Item>
 
                                     <Nav.Item>
-                                        <Nav.Link eventKey="link-2"  className="pr-4">About</Nav.Link>
+                                        <NavLink  to="#" className="nav-link pr-4">About</NavLink>
                                     </Nav.Item>
 
                                     <Nav.Item>
-                                        <Nav.Link eventKey="link-2">Contact US</Nav.Link>
+                                        <NavLink to="#" className="nav-link">Contact US</NavLink>
                                     </Nav.Item>
-                                
                                 </Nav>
                             </div>
                         </Col>

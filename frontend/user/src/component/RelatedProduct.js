@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import Slider from "react-slick";
+import Tooltip from '@material-ui/core/Tooltip';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {FaShoppingCart, FaHeart} from "react-icons/fa";
 import { AiOutlineRetweet} from "react-icons/ai";
+
+import { API_URL, STATIC_URL } from "../helper/api";
+
 import Imager1 from '../images/r1.jpg';
 import Imager2 from '../images/r2.jpg';
 import Imager3 from '../images/r3.jpg';
@@ -16,14 +20,23 @@ import Imager8 from '../images/r8.jpg';
 
 
 
-export default class RelatedProducts extends Component {
-  state = {
-    display: true,
-    width: 300,
-  };
-  render() {
-    
-    var settings = {
+export default function RelatedProducts(props) {
+  // state = {
+  //   display: true,
+  //   width: 300,
+  // };
+  const { products } = props;
+  
+  const getImagePath = (image) => {
+    if(image){
+      let filename_pieces = image.split('/');
+      let img_name = filename_pieces[filename_pieces.length - 1];
+      return STATIC_URL + img_name;
+    }
+    return null;
+  }
+
+  var settings = {
       dots: true,
       infinite: false,
       speed: 500,
@@ -61,23 +74,29 @@ export default class RelatedProducts extends Component {
     };
     
     return (
-      <div>
-        
+      <>
+      {console.log("related ", products)}
         <Slider {...settings}>
-          <div>
-          <figure class="snip0013">
-                <img className="responsive" src={Imager1} alt="image"/>
-                <div>
-                    <ul className="img-hover">
-                        <li><a href="#"><i><FaShoppingCart/></i></a></li>
-                        <li><a href="#"><i><FaHeart/></i></a></li>
-                        <li><a href="#"><i><AiOutlineRetweet/></i></a></li>
-                    </ul>    
-                </div>			
+        {products ? products.map((product, index)=>(
+          <Tooltip key={index} title={product.product_title} placement="top">
+            <figure className="snip0013" >
+              {/* TODO: change height with  response way */}
+              <img style={{height:"250px"}} src={getImagePath(product.images[0]?.image)} alt="Image not found"/>
+              <div>
+                  <ul className="img-hover">
+                      <li><a href="#"><i><FaShoppingCart/></i></a></li>
+                      <li><a href="#"><i><FaHeart/></i></a></li>
+                      <li><a href="#"><i><AiOutlineRetweet/></i></a></li>
+                  </ul>    
+              </div>			
             </figure>
-          </div>
-          <div>
-          <figure class="snip0013">
+          </Tooltip>
+        )) : 
+          <p>No related products found.</p>
+        }
+{/*            
+         <div>
+            <figure className="snip0013">
                 <img className="responsive" src={Imager2} alt="image"/>
                 <div>
                     <ul className="img-hover">
@@ -88,8 +107,9 @@ export default class RelatedProducts extends Component {
                 </div>			
             </figure>
           </div>
+         
           <div>
-          <figure class="snip0013">
+          <figure className="snip0013">
                 <img className="responsive" src={Imager3} alt="image"/>
                 <div>
                     <ul className="img-hover">
@@ -101,7 +121,7 @@ export default class RelatedProducts extends Component {
             </figure>
           </div>
           <div>
-          <figure class="snip0013">
+          <figure className="snip0013">
                 <img className="responsive" src={Imager4} alt="image"/>
                 <div>
                     <ul className="img-hover">
@@ -113,7 +133,7 @@ export default class RelatedProducts extends Component {
             </figure>
           </div>
           <div>
-          <figure class="snip0013">
+          <figure className="snip0013">
                 <img className="responsive" src={Imager5} alt="image"/>
                 <div>
                     <ul className="img-hover">
@@ -125,7 +145,7 @@ export default class RelatedProducts extends Component {
             </figure>
           </div>
           <div>
-          <figure class="snip0013">
+          <figure className="snip0013">
                 <img className="responsive" src={Imager6} alt="image"/>
                 <div>
                     <ul className="img-hover">
@@ -137,7 +157,7 @@ export default class RelatedProducts extends Component {
             </figure>
           </div>
           <div>
-          <figure class="snip0013">
+          <figure className="snip0013">
                 <img className="responsive" src={Imager7} alt="image"/>
                 <div>
                     <ul className="img-hover">
@@ -149,7 +169,7 @@ export default class RelatedProducts extends Component {
             </figure>
           </div>
           <div>
-          <figure class="snip0013">
+          <figure className="snip0013">
                 <img className="responsive" src={Imager8} alt="image"/>
                 <div>
                     <ul className="img-hover">
@@ -163,8 +183,8 @@ export default class RelatedProducts extends Component {
           <div>
           
           </div>
+*/}
         </Slider>
-      </div>
+      </>
     );
   }
-}

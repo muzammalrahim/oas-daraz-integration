@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import Carousel from "react-elastic-carousel";
 import Slider from "react-slick";
+import NumberFormat from 'react-number-format';
 import "react-multi-carousel/lib/styles.css";
-import Rating from "../component/Rating";
+import Rating from '@material-ui/lab/Rating';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+// import Rating from "../component/Rating";
 import "../assets/style.css";
-import { API_URL, STATIC_URL } from "../helper/api";
+import { API_URL, STATIC_URL, MAIN_ROUTE } from "../helper/api";
+import { Link } from "react-router-dom";
 
 export default function BestSeller() {
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
@@ -59,6 +63,7 @@ export default function BestSeller() {
           <Slider {...settings}>
           
              {bestSellerProducts.map((product) => (
+               <Link key={product.id}  to={`/${MAIN_ROUTE}/ProductDetail/${product.id}`} >
                 <div key={product.id}>
                         <div className="responsivee-image">
                           <img
@@ -70,16 +75,13 @@ export default function BestSeller() {
                         </div>
                           <div className="text pt-3">
                             <h5>{product.product_title}</h5>
-                            <p className="mb-1">{product.unit_price}</p>
+                            <p className="mb-1"><NumberFormat value={product.unit_price} displayType={'text'} thousandSeparator={true} prefix={'$'} /></p>
                           </div>
-                          <Rating
-                            value={product.product_rating}
-                            max={5}
-                            editing="false"
-                            // onStarHover={false}
-                            onChange={(i) => console.log("onChange " + i)}
+                          <Rating name="read-only" value={product.product_rating} readOnly 
+                            emptyIcon={<StarBorderIcon fontSize="inherit" />} 
                           />
                   </div>
+                  </Link>
             ))} 
           </Slider>
         </div>

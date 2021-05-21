@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Imagef0 from "../images/f0.jpg";
-import Rating from "../component/Rating";
+import Rating from '@material-ui/lab/Rating';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { AiOutlineRetweet } from "react-icons/ai";
+import NumberFormat from 'react-number-format';
 import ImageResponsive from "react-image-responsive";
 import "../assets/style.css";
 import { API_URL, STATIC_URL } from "../helper/api";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import {MAIN_ROUTE} from "../helper/api";
 
@@ -47,12 +49,12 @@ export default function FeaturedProducts(props) {
             <p>Newest trends from top brands</p>
           </div>
         </Row>
-        <Row className="products-grid pt-4 pb-4">
+        <Row className="pt-4 pb-4">
           {featuredProducts.map((product, index) => (
-                <Col key={index}>
+                <Col key={index} className="col-md-4">
                       <div className="inner-content">
                         <div className="img-wrap">
-                          <Nav.Link href={`/${MAIN_ROUTE}/ProductDetail/${product.id}`}>
+                          <NavLink className="nav-link" to={`/${MAIN_ROUTE}/ProductDetail/${product.id}`}>
                             <figure className="snip0013">
                               <img
                                 className="responsive-image"
@@ -88,18 +90,21 @@ export default function FeaturedProducts(props) {
                                 </ul>
                               </div>
                             </figure>
-                          </Nav.Link>
+                          </NavLink>
                         </div>
                         <div className="text pt-3">
                           <h5>{product.product_title}</h5>
-                          <p className="mb-1">{product.unit_price}</p>
+                          <p className="mb-1"><NumberFormat value={product.unit_price} displayType={'text'} thousandSeparator={true} prefix={'$'} /></p>
                         </div>
-                        <Rating
+                        <Rating name="read-only" value={product.product_rating} readOnly 
+                          emptyIcon={<StarBorderIcon fontSize="inherit" />} 
+                        />
+                        {/* <Rating
                           value={product.product_rating}
                           max={5}
                           editing="false"
                           // onStarHover="false"
-                        />
+                        /> */}
                       </div>
                 </Col>
           ))}

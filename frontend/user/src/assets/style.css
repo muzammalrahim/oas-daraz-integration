@@ -1010,8 +1010,9 @@ h3.price-detail {
     cursor: pointer;
 }
 .selected{
-    width: 100%;
-    margin: 0 auto;
+    width: 90%;
+    height: 60%;
+    /* margin: 0 auto; */
     border: 1px solid #b3b3b3;
     box-shadow: 3px 3px 5px 1px #ccc;
 }
@@ -1037,7 +1038,7 @@ h3.price-detail {
 }
 
 .responsive-image{
-    width: 200px !important ;
+    width: 200px ;
     height: 200px!important;
 }
 
