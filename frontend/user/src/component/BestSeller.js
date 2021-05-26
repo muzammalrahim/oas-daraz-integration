@@ -63,10 +63,11 @@ export default function BestSeller() {
           <Slider {...settings}>
           
              {bestSellerProducts.map((product) => (
-               <Link key={product.id}  to={`/${MAIN_ROUTE}/ProductDetail/${product.id}`} >
-                <div key={product.id}>
+               <Link key={product.id}  to={`/${MAIN_ROUTE}/ProductDetail/${product.id}`}  >
+                <div key={product.id} style={{ textAlign:"-webkit-center"}}>
                         <div className="responsivee-image">
                           <img
+                            style={{width: "auto !important"}}
                             src={
                                 getImagePath(product.images[0]?.image)
                             }

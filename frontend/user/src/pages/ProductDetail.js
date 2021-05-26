@@ -21,20 +21,29 @@ export default class ProductDetail extends Component {
         product: {},
       }; 
 
-    getProductDetail = () => {
-        const id = this.props.match.params?.id;
+    getProductDetail = (id) => {
+        console.log("id ", id)
         list('inventory/' + id).then(response => {
             // console.log(response.data)
             this.setState({product: response.data})
         })
     }
+
+    handleProduct = (id) => {
+        if(id){
+            this.props.match.params.id = id;
+            this.getProductDetail(id)
+        }
+    }
+
     componentDidMount() {
-        this.getProductDetail()
+        const id = this.props.match.params?.id;
+        this.getProductDetail(id)
     }
 
     render() {
         const { product } = this.state;
-        console.log("product ", product)
+        // console.log("product ", product)
         return (
             <>
                 <div className="top-area">
@@ -148,7 +157,7 @@ export default class ProductDetail extends Component {
                     
                     <div className="product-related mb-5">
                         <h2>related products</h2>
-                        {product && <RelatedProducts products={product.related_products} />}
+                        {product.hasOwnProperty("related_products") && <RelatedProducts products={product.related_products} handleProduct={this.handleProduct} />}
                     </div>
                 </Container>
                 

@@ -51,7 +51,7 @@ export default function FeaturedProducts(props) {
         </Row>
         <Row className="pt-4 pb-4">
           {featuredProducts.map((product, index) => (
-                <Col key={index} className="col-md-4">
+                <Col key={index} className="col-lg-3 col-md-4 col-sm-6 col-12">
                       <div className="inner-content">
                         <div className="img-wrap">
                           <NavLink className="nav-link" to={`/${MAIN_ROUTE}/ProductDetail/${product.id}`}>

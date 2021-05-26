@@ -1019,7 +1019,7 @@ h3.price-detail {
 .imgContainer{
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     flex-wrap: wrap;
     padding: 40px 0 0 0;
 }
@@ -1044,7 +1044,7 @@ h3.price-detail {
 
 
 .responsivee-image img{
-    width: 180px !important;
+    width: auto !important;
     height: 180px!important;
 }
 

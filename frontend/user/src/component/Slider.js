@@ -45,7 +45,7 @@ export default function Slider() {
             {sliders && sliders.map((slider, index) => (
               <Carousel.Item key={index}>
                 <div className="img-wrap">
-                  <div className="" ><img className="w-100" src={getImagePath(slider.image)} alt="No Image found" /></div>
+                  <img className="w-100 h-100" src={getImagePath(slider.image)} alt="No Image found" />
                   <div className="overlay"></div>
                 </div>
               

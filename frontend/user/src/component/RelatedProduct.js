@@ -1,12 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 import Slider from "react-slick";
 import Tooltip from '@material-ui/core/Tooltip';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {FaShoppingCart, FaHeart} from "react-icons/fa";
 import { AiOutlineRetweet} from "react-icons/ai";
+import { Link } from 'react-router-dom';
 
-import { API_URL, STATIC_URL } from "../helper/api";
+import { API_URL, STATIC_URL, MAIN_ROUTE } from "../helper/api";
 
 import Imager1 from '../images/r1.jpg';
 import Imager2 from '../images/r2.jpg';
@@ -25,7 +26,7 @@ export default function RelatedProducts(props) {
   //   display: true,
   //   width: 300,
   // };
-  const { products } = props;
+  const { products, handleProduct } = props;
   
   const getImagePath = (image) => {
     if(image){
@@ -75,10 +76,11 @@ export default function RelatedProducts(props) {
     
     return (
       <>
-      {console.log("related ", products)}
+      {/* {console.log("related ", products)} */}
         <Slider {...settings}>
-        {products ? products.map((product, index)=>(
-          <Tooltip key={index} title={product.product_title} placement="top">
+        {products.length !== 0 ? products.map((product, index)=>(
+          <Link key={index} onClick={()=>handleProduct(product.id)} to={`/${MAIN_ROUTE}/ProductDetail/${product.id}`} >
+          <Tooltip  title={product.product_title} placement="top">
             <figure className="snip0013" >
               {/* TODO: change height with  response way */}
               <img style={{height:"250px"}} src={getImagePath(product.images[0]?.image)} alt="Image not found"/>
@@ -91,6 +93,7 @@ export default function RelatedProducts(props) {
               </div>			
             </figure>
           </Tooltip>
+          </Link>
         )) : 
           <p>No related products found.</p>
         }
